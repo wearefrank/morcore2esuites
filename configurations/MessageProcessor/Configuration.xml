@@ -1,0 +1,8 @@
+<!DOCTYPE configuration [
+    <!ENTITY Router SYSTEM "./Configuration_Router.xml">
+]>
+
+
+<Configuration>
+    &Router;
+</Configuration>

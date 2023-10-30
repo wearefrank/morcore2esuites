@@ -1,5 +1,5 @@
-<project default="restart-%%INSTANCE_NAME%%">
-    <target name="restart-%%INSTANCE_NAME%%">
+<project default="restart-morcore2esuites">
+    <target name="restart-morcore2esuites">
         <basename property="project.dir" file="${basedir}"/>
         <condition property="exe" value="../frank-runner/restart.bat" else="/bin/bash">
             <os family="windows"/>
