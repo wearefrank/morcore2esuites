@@ -1,0 +1,10 @@
+<!DOCTYPE configuration [
+    <!ENTITY TaakSender SYSTEM "./Configuration_TaakApi.xml">
+    <!ENTITY TaakReceiver SYSTEM "./Configuration_TaakApplicatieApi.xml">
+]>
+
+
+<Configuration>
+    &TaakSender;
+    &TaakReceiver;
+</Configuration>
