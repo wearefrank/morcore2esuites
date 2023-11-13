@@ -1,0 +1,130 @@
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
+    <Adapter name="Action_ListTaakTypes">
+        <Receiver name="ListTaakTypes">
+            <ApiListener
+                name="ListTaakTypes"
+                uriPattern="/taaktypes" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <EchoPipe name="ReturnTypes" getInputFromFixedValue="$active_taaktypes" />
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Action_GetTaakType">
+        <Receiver name="GetTaakType">
+            <ApiListener
+                name="GetTaakType"
+                uriPattern="/taaktypes/{uuid}" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Action_PostTaak">
+        <Receiver name="PostTaak">
+            <ApiListener
+                name="PostTaak"
+                method="POST"
+                uriPattern="/taak" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Action_DeleteTaak">
+        <Receiver name="DeleteTaak">
+            <ApiListener
+                name="DeleteTaak"
+                method="DELETE"
+                uriPattern="/taak/{uuid}" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Action_GetTaak">
+        <Receiver name="GetTaak">
+            <ApiListener
+                name="GetTaak"
+                uriPattern="/taak/{uuid}" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Action_PostTaakCommunicatie">
+        <Receiver name="PostTaakCommunicatie">
+            <ApiListener
+                name="PostTaakCommunicatie"
+                method="POST"
+                uriPattern="/taak/{uuid}/communicatie" />
+
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <JsonPipe name="JsonToXml" />
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
+        </Pipeline>
+    </Adapter>
+
+</Module>
