@@ -13,9 +13,11 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <EchoPipe name="ReturnTypes" getInputFromFixedValue="$active_taaktypes" />
+            <XsltPipe name="CreateGetTaakTypeResponse"
+                styleSheetName="xsl/ListTaakTypesResponse.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+                <Forward name="success" path="Exit" />
+            </XsltPipe>
         </Pipeline>
     </Adapter>
 
@@ -32,10 +34,9 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
+                <Forward name="success" path="Exit" />
             </XsltPipe>
         </Pipeline>
     </Adapter>
@@ -52,11 +53,20 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidatePostTaakInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
         </Pipeline>
@@ -74,11 +84,19 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidateDeleteTaakInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
         </Pipeline>
@@ -99,7 +117,7 @@
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
         </Pipeline>
@@ -117,11 +135,20 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidatePostCommunicatieInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+            <XsltPipe name="CreatePostCommunicatieResponse"
+                styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
         </Pipeline>

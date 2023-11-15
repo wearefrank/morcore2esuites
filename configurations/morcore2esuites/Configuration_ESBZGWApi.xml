@@ -1,6 +1,6 @@
 <Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
-    <Adapter name="NewResponse_GetMelding">
+    <Adapter name="Response_GetMelding">
         <Receiver name="Response_GetMelding">
             <JavaListener name="Response_GetMelding" />
         </Receiver>
@@ -17,7 +17,7 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="NewResponse_GetMeldingTaken">
+    <Adapter name="Response_GetMeldingTaken">
         <Receiver name="Response_GetMeldingTaken">
             <JavaListener name="Response_GetMeldingTaken" />
         </Receiver>
@@ -34,7 +34,7 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="NewResponse_PostNewTaakopdracht">
+    <Adapter name="Response_PostNewTaakopdracht">
         <Receiver name="Response_PostNewTaakopdracht">
             <JavaListener name="Response_PostNewTaakopdracht" />
         </Receiver>
@@ -51,7 +51,7 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="NewResponse_PostNotificatie">
+    <Adapter name="Response_PostNotificatie">
         <Receiver name="Response_PostNotificatie">
             <JavaListener name="Response_PostNotificatie" />
         </Receiver>

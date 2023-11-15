@@ -1,10 +1,12 @@
 <!DOCTYPE configuration [
     <!ENTITY TaakSender SYSTEM "./Configuration_TaakApi.xml">
     <!ENTITY TaakReceiver SYSTEM "./Configuration_TaakApplicatieApi.xml">
+    <!ENTITY ZGWSender SYSTEM "./Configuration_ESBZGWApi.xml">
 ]>
 
 
 <Configuration>
     &TaakSender;
     &TaakReceiver;
+    &ZGWSender;
 </Configuration>

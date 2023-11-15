@@ -12,14 +12,14 @@
                         select="concat('https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz',$uuid)" />
                 </href>
             </self>
-            <uuid>
-                <xsl:value-of select="$uuid" />
-            </uuid>
-            <omschrijving>Ophalen grofvuil groot</omschrijving>
-            <toelichting>Grofvuil wordt opgehaald met een knijpkraan. Geschikt voor bijvoorbeeld
-                grote
-                kasten, koelkast, wasmachine.</toelichting>
-            <additionele_informatie>~</additionele_informatie>
         </_links>
+            <uuid>
+            <xsl:value-of select="$uuid" />
+        </uuid>
+            <omschrijving>Ophalen grofvuil groot</omschrijving>
+            <toelichting>Grofvuil
+        wordt opgehaald met een knijpkraan. Geschikt voor bijvoorbeeld grote kasten, koelkast,
+        wasmachine.</toelichting>
+            <additionele_informatie>~</additionele_informatie>
     </xsl:template>
 </xsl:stylesheet>
