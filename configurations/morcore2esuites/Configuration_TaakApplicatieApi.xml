@@ -13,11 +13,17 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <XsltPipe name="CreateGetTaakTypeResponse"
+            <!-- TODO: Check what the source of this response should be -->
+            <FixedResultPipe name="GetZaakTypeList"
+                filename="responses/ZaakTypes.xml" />
+
+            <JsonPipe name="XmlToJson" />
+
+            <!-- <XsltPipe name="CreateGetTaakTypeResponse"
                 styleSheetName="xsl/ListTaakTypesResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
                 <Forward name="success" path="Exit" />
-            </XsltPipe>
+            </XsltPipe> -->
         </Pipeline>
     </Adapter>
 
@@ -65,10 +71,9 @@
                 <Forward name="error" path="Exception" />
             </XmlValidatorPipe>
 
-
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <SenderPipe name="Request_PostZaak">
+                <IbisLocalSender javaListener="Request_PostZaak"/>
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 
@@ -99,6 +104,10 @@
             <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
+
+            <SenderPipe name="SwitchConfiguration">
+                <IbisLocalSender javaListener="Request_DeleteZaak"/>
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 

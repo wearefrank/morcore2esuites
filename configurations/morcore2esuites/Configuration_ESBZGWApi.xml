@@ -1,8 +1,8 @@
 <Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
-    <Adapter name="Response_GetMelding">
-        <Receiver name="Response_GetMelding">
-            <JavaListener name="Response_GetMelding" />
+    <Adapter name="Request_DeleteZaak">
+        <Receiver name="Request_DeleteZaak">
+            <JavaListener name="Request_DeleteZaak" />
         </Receiver>
 
         <Pipeline>
@@ -10,16 +10,35 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <SenderPipe name="SendToMorCore">
-                <HttpSender name="GetMelding" methodType="GET" url="/melding/{meldingUuid}"/>
+            <!-- TODO: Make dynamic -->
+
+            <PutSystemDateInSessionPipe name="StoreSystemDate" />
+
+            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader">
+                <Param name="value" sessionKey="originalMessage" xpathExpression="//Toelichting" />
+            </PutInSessionPipe>
+
+            <XsltPipe name="CreateDeleteZaakRequest" styleSheetName="xsl/DeleteZaakRequest.xsl">
+                <Param name="currentDate" sessionKey="systemDate" />
+            </XsltPipe>
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+
+            <SenderPipe name="SendToESB">
+                <HttpSender name="SendToESB" methodType="POST" url="/statussen"
+                    headersParams="X-Audit-Toelichting">
+                    <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
+                </HttpSender>
             </SenderPipe>
-            
+
+            <!-- TODO: Add error handling -->
+
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Response_GetMeldingTaken">
-        <Receiver name="Response_GetMeldingTaken">
-            <JavaListener name="Response_GetMeldingTaken" />
+    <Adapter name="Request_PostZaak">
+        <Receiver name="Request_PostZaak">
+            <JavaListener name="Request_PostZaak" />
         </Receiver>
 
         <Pipeline>
@@ -27,45 +46,31 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <SenderPipe name="SendToMorCore">
-                <HttpSender name="GetTaakopdracht" methodType="GET" url="/melding/{meldingUuid}/taakopdracht"/>
+            <!-- TODO: Make dynamic -->
+
+            <PutSystemDateInSessionPipe name="StoreSystemDate" />
+
+            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader">
+                <Param name="value" sessionKey="originalMessage" xpathExpression="//Toelichting" />
+            </PutInSessionPipe>
+
+            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl">
+                <Param name="currentDate" sessionKey="systemDate" />
+            </XsltPipe>
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+
+            <SenderPipe name="SendToESB">
+                <HttpSender name="SendToESB" methodType="POST" url="/melding/{meldingUuid}"
+                    headersParams="X-Audit-Toelichting, Accept-Crs, Content-Crs">
+                    <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                </HttpSender>
             </SenderPipe>
-            
+
+            <!-- TODO: Add error handling -->
+
         </Pipeline>
     </Adapter>
-
-    <Adapter name="Response_PostNewTaakopdracht">
-        <Receiver name="Response_PostNewTaakopdracht">
-            <JavaListener name="Response_PostNewTaakopdracht" />
-        </Receiver>
-
-        <Pipeline>
-            <Exits>
-                <Exit name="Exit" state="SUCCESS" />
-            </Exits>
-
-            <SenderPipe name="SendToMorCore">
-                <HttpSender name="PostNewTaakopdracht" methodType="POST" url="/melding/{meldingUuid}/taakopdracht"/>
-            </SenderPipe>
-            
-        </Pipeline>
-    </Adapter>
-
-    <Adapter name="Response_PostNotificatie">
-        <Receiver name="Response_PostNotificatie">
-            <JavaListener name="Response_PostNotificatie" />
-        </Receiver>
-
-        <Pipeline>
-            <Exits>
-                <Exit name="Exit" state="SUCCESS" />
-            </Exits>
-
-            <SenderPipe name="SendToMorCore">
-                <HttpSender name="PostNotificatie" methodType="POST" url="/melding/{meldingUuid}/taakopdracht/{taakOpdrachtUuid}/notificatie"/>
-            </SenderPipe>
-            
-        </Pipeline>
-    </Adapter>
-
 </Module>
