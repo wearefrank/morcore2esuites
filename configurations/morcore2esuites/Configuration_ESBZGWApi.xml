@@ -18,7 +18,7 @@
                 <Param name="value" sessionKey="originalMessage" xpathExpression="//Toelichting" />
             </PutInSessionPipe>
 
-            <XsltPipe name="CreateDeleteZaakRequest" styleSheetName="xsl/DeleteZaakRequest.xsl">
+            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl">
                 <Param name="currentDate" sessionKey="systemDate" />
             </XsltPipe>
 
