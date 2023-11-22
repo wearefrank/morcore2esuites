@@ -72,7 +72,7 @@
             </XmlValidatorPipe>
 
             <SenderPipe name="Request_PostZaak">
-                <IbisLocalSender javaListener="Request_PostZaak"/>
+                <IbisLocalSender javaListener="Request_PostZaak" />
             </SenderPipe>
         </Pipeline>
     </Adapter>
@@ -106,7 +106,7 @@
             </XsltPipe>
 
             <SenderPipe name="SwitchConfiguration">
-                <IbisLocalSender javaListener="Request_DeleteZaak"/>
+                <IbisLocalSender javaListener="Request_DeleteZaak" />
             </SenderPipe>
         </Pipeline>
     </Adapter>
@@ -126,9 +126,9 @@
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <SenderPipe name="SwitchConfiguration">
+                <IbisLocalSender javaListener="Request_GetZaak" />
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 
