@@ -86,8 +86,6 @@
 
             <!-- TODO: Make dynamic -->
 
-            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/GetZaakRequest.xsl"/>
-
             <JsonPipe name="XmlToJson" direction="XML2JSON" />
 
             <SenderPipe name="SendToESB">
