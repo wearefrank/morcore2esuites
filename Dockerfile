@@ -1,4 +1,4 @@
-FROM wearefrank/frank-framework:latest
+FROM frankframework/frankframework:7.9-20231028.143509
 
 ### Uncommend this section if the Frank! contains custom classes.
 ## Copy dependencies
