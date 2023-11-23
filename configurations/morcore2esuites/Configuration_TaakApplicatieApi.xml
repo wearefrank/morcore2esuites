@@ -101,10 +101,6 @@
                 <Forward name="error" path="Exception" />
             </XmlValidatorPipe>
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
-
             <SenderPipe name="SwitchConfiguration">
                 <IbisLocalSender javaListener="Request_DeleteZaak" />
             </SenderPipe>
