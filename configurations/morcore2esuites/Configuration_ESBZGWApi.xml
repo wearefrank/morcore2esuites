@@ -14,11 +14,10 @@
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
 
-            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader">
-                <Param name="value" sessionKey="originalMessage" xpathExpression="//Toelichting" />
-            </PutInSessionPipe>
+            <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
+                xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" />
 
-            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl">
+            <XsltPipe name="CreatePostZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/PostZaakRequest.xsl">
                 <Param name="currentDate" sessionKey="systemDate" />
             </XsltPipe>
 
@@ -50,11 +49,14 @@
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
 
-            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader">
-                <Param name="value" sessionKey="originalMessage" xpathExpression="//Toelichting" />
+            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader"
+                getInputFromFixedValue="TestValue">
+                <!-- <Param name="value" sessionKey="originalMessage"
+                xpathExpression="//Toelichting" /> -->
             </PutInSessionPipe>
 
-            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl">
+            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl"
+                getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
             </XsltPipe>
 
