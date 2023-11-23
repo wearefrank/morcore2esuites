@@ -1,0 +1,60 @@
+{
+	"url": "string",
+	"uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+	"identificatie": "string",
+	"bronorganisatie": "string",
+	"omschrijving": "string",
+	"toelichting": "string",
+	"zaaktype": "string",
+	"registratiedatum": "2023-11-22",
+	"verantwoordelijkeOrganisatie": "string",
+	"startdatum": "2023-11-22",
+	"einddatum": "2023-11-22",
+	"einddatumGepland": "2023-11-22",
+	"uiterlijkeEinddatumAfdoening": "2023-11-22",
+	"publicatiedatum": "2023-11-22",
+	"communicatiekanaal": "string",
+	"productenOfDiensten": [
+		"string"
+	],
+	"vertrouwelijkheidaanduiding": "openbaar",
+	"betalingsindicatie": "nvt",
+	"betalingsindicatieWeergave": "string",
+	"laatsteBetaaldatum": "2023-11-22T14:27:48.013Z",
+	"zaakgeometrie": {
+		"type": "Point"
+	},
+	"verlenging": {
+		"reden": "string",
+		"duur": "string"
+	},
+	"opschorting": {
+		"indicatie": true,
+		"reden": "string"
+	},
+	"selectielijstklasse": "string",
+	"hoofdzaak": "string",
+	"deelzaken": [
+		"string"
+	],
+	"relevanteAndereZaken": [
+		{
+			"url": "string",
+			"aardRelatie": "vervolg"
+		}
+	],
+	"eigenschappen": [
+		"string"
+	],
+	"status": "string",
+	"kenmerken": [
+		{
+			"kenmerk": "string",
+			"bron": "string"
+		}
+	],
+	"archiefnominatie": "blijvend_bewaren",
+	"archiefstatus": "nog_te_archiveren",
+	"archiefactiedatum": "2023-11-22",
+	"resultaat": "string"
+}
