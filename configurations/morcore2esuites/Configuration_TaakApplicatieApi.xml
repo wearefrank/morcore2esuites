@@ -13,17 +13,7 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <!-- TODO: Check what the source of this response should be -->
-            <FixedResultPipe name="GetZaakTypeList"
-                filename="responses/ZaakTypes.xml" />
-
-            <JsonPipe name="XmlToJson" />
-
-            <!-- <XsltPipe name="CreateGetTaakTypeResponse"
-                styleSheetName="xsl/ListTaakTypesResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-                <Forward name="success" path="Exit" />
-            </XsltPipe> -->
+            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
         </Pipeline>
     </Adapter>
 
@@ -40,10 +30,7 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-                <Forward name="success" path="Exit" />
-            </XsltPipe>
+            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
         </Pipeline>
     </Adapter>
 
@@ -129,6 +116,7 @@
     </Adapter>
 
     <Adapter name="Action_PostTaakCommunicatie">
+        <!-- TODO: Figure out what this is -->
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"
