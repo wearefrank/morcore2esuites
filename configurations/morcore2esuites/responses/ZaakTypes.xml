@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <items>
+        <_links>
+            <self>
+                <href>https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz</href>
+            </self>
+        </_links>
+        <uuid>xxxx-yyyy-zzz</uuid>
+        <omschrijving>Ophalen grofvuil groot</omschrijving>
+        <toelichting>Grofvuil wordt opgehaald met een knijpkraan. Geschikt voor bijvoorbeeld grote kasten, koelkast, wasmachine.</toelichting>
+        <additionele_informatie />
+    </items>
+    <items>
+        <_links>
+            <self>
+                <href>https://taakapplicatie.tld/taaktypes/aaaa-ssss-dddd</href>
+            </self>
+        </_links>
+        <uuid>aaaa-ssss-dddd</uuid>
+        <omschrijving>Repareren straatverlichting</omschrijving>
+        <toelichting>Verlichting in lichtmast doet het niet. Niet gebruiken voor gevaarlijke situaties.</toelichting>
+        <additionele_informatie>
+            <veld>lichtmast nummer</veld>
+        </additionele_informatie>
+        <additionele_informatie>
+            <veld>werking gecontroleerd in observ</veld>
+        </additionele_informatie>
+    </items>
+</root>

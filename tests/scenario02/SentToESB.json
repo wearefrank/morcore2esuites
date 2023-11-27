@@ -1,0 +1,42 @@
+{
+    "identificatie": "string",
+    "bronorganisatie": "string",
+    "omschrijving": "string",
+    "toelichting": "string",
+    "zaaktype": "string",
+    "registratiedatum": "2023-11-21",
+    "verantwoordelijkeOrganisatie": "string",
+    "startdatum": "2023-11-21",
+    "einddatumGepland": "2023-11-21",
+    "uiterlijkeEinddatumAfdoening": "2023-11-21",
+    "publicatiedatum": "2023-11-21",
+    "communicatiekanaal": "string",
+    "productenOfDiensten": "string",
+    "vertrouwelijkheidaanduiding": "openbaar",
+    "betalingsindicatie": "nvt",
+    "laatsteBetaaldatum": "2023-11-21T14:25:35.511Z",
+    "zaakgeometrie": {
+        "type": "Point"
+    },
+    "verlenging": {
+        "reden": "string",
+        "duur": "string"
+    },
+    "opschorting": {
+        "indicatie": "true",
+        "reden": "string"
+    },
+    "selectielijstklasse": "string",
+    "hoofdzaak": "string",
+    "relevanteAndereZaken": {
+        "url": "string",
+        "aardRelatie": "vervolg"
+    },
+    "kenmerken": {
+        "kenmerk": "string",
+        "bron": "string"
+    },
+    "archiefnominatie": "blijvend_bewaren",
+    "archiefstatus": "nog_te_archiveren",
+    "archiefactiedatum": "2023-11-21"
+}

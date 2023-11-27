@@ -1,0 +1,107 @@
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
+    <Adapter name="Request_DeleteZaak">
+        <Receiver name="Request_DeleteZaak">
+            <JavaListener name="Request_DeleteZaak" />
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <!-- TODO: Make dynamic -->
+
+            <PutSystemDateInSessionPipe name="StoreSystemDate" />
+
+            <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
+                xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" />
+
+            <XsltPipe name="CreatePostZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/PostZaakRequest.xsl">
+                <Param name="currentDate" sessionKey="systemDate" />
+            </XsltPipe>
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+
+            <SenderPipe name="SendToESB">
+                <HttpSender name="SendToESB" methodType="POST" url="/statussen"
+                    headersParams="X-Audit-Toelichting">
+                    <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
+                </HttpSender>
+            </SenderPipe>
+
+            <!-- TODO: Add error handling -->
+
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Request_PostZaak">
+        <Receiver name="Request_PostZaak">
+            <JavaListener name="Request_PostZaak" />
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <!-- TODO: Make dynamic -->
+
+            <PutSystemDateInSessionPipe name="StoreSystemDate" />
+
+            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader"
+                getInputFromFixedValue="TestValue">
+                <!-- <Param name="value" sessionKey="originalMessage"
+                xpathExpression="//Toelichting" /> -->
+            </PutInSessionPipe>
+
+            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl"
+                getInputFromSessionKey="originalMessage">
+                <Param name="currentDate" sessionKey="systemDate" />
+            </XsltPipe>
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+
+            <SenderPipe name="SendToESB">
+                <HttpSender name="SendToESB" methodType="POST" url="/melding/{meldingUuid}"
+                    headersParams="X-Audit-Toelichting,Accept-Crs,Content-Crs">
+                    <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                </HttpSender>
+            </SenderPipe>
+
+            <!-- TODO: Add error handling -->
+
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="Request_GetZaak">
+        <Receiver name="Request_GetZaak">
+            <JavaListener name="Request_GetZaak" />
+        </Receiver>
+
+        <Pipeline>
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+            </Exits>
+
+            <!-- TODO: Make dynamic -->
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+
+            <SenderPipe name="SendToESB">
+                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                    headersParams="Accept-Crs,Content-Crs">
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
+                </HttpSender>
+            </SenderPipe>
+
+            <!-- TODO: Add error handling -->
+
+        </Pipeline>
+    </Adapter>
+
+</Module>

@@ -13,9 +13,7 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <EchoPipe name="ReturnTypes" getInputFromFixedValue="$active_taaktypes" />
+            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
         </Pipeline>
     </Adapter>
 
@@ -32,11 +30,7 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
         </Pipeline>
     </Adapter>
 
@@ -52,13 +46,21 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidatePostTaakInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+            <SenderPipe name="Request_PostZaak">
+                <IbisLocalSender javaListener="Request_PostZaak" />
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 
@@ -74,13 +76,21 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidateDeleteTaakInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+            <SenderPipe name="SwitchConfiguration">
+                <IbisLocalSender javaListener="Request_DeleteZaak" />
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 
@@ -99,13 +109,14 @@
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <SenderPipe name="SwitchConfiguration">
+                <IbisLocalSender javaListener="Request_GetZaak" />
+            </SenderPipe>
         </Pipeline>
     </Adapter>
 
     <Adapter name="Action_PostTaakCommunicatie">
+        <!-- TODO: Figure out what this is -->
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"
@@ -117,11 +128,20 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
 
             <JsonPipe name="JsonToXml" />
 
-            <XsltPipe name="CreateGetTaakTypeResponse" styleSheetName="xsl/TaakTypeResponse.xsl">
+            <XmlValidatorPipe name="ValidateInputMessage" root="root"
+                schema="xsd/ValidatePostCommunicatieInput.xsd">
+                <Forward name="failure" path="Reject" />
+                <Forward name="error" path="Exception" />
+            </XmlValidatorPipe>
+
+            <XsltPipe name="CreatePostCommunicatieResponse"
+                styleSheetName="xsl/GetTaakTypeResponse.xsl">
                 <Param name="uuid" sessionKey="uuid" />
             </XsltPipe>
         </Pipeline>
