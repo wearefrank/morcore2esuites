@@ -5,15 +5,25 @@
             <ApiListener
                 name="ListTaakTypes"
                 uriPattern="/taaktypes" />
-
         </Receiver>
 
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
-            </Exits>
+                <Exit name="Reject" state="REJECTED"/>
+                <Exit name="failure" state="ERROR"/>
+             </Exits>
+            
+            <fixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
+                <Forward name="jsonpipe" path="XmlToJson"/>
+                <Forward name="failure" path="failure"/>
+            
+            <JsonPipe name="XmlToJson" direction="XML2JSON">
+                <Forward name="success" path="Exit"/>
+                <Forward name="failure" path="Reject"/>
+            </JsonPipe>
         </Pipeline>
     </Adapter>
 
@@ -21,18 +31,32 @@
         <Receiver name="GetTaakType">
             <ApiListener
                 name="GetTaakType"
-                uriPattern="/taaktypes/{uuid}" />
-
+                uriPattern="/taaktypes/{uuid}"/>
         </Receiver>
 
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
-            </Exits>
+                <Exit name="Reject" state="REJECTED"/>
+                <Exit name="failure" state="ERROR"/>
+             </Exits>
 
-            <EchoPipe name="Hello" getInputFromFixedValue="World!"></EchoPipe>
+            <fixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
+
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
+                <Forward name="XSLTCheck" path="TaakType"/>
+                <Forward name="failure" path="failure"/>
+        
+            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl">
+            </XsltPipe>
+
+            <JsonPipe name="XmlToJson" direction="XML2JSON">
+                <Forward name="success" path="Exit"/>
+                <Forward name="failure" path="Reject"/>
+            </JsonPipe>
         </Pipeline>
     </Adapter>
+
 
     <Adapter name="Action_PostTaak">
         <Receiver name="PostTaak">
@@ -40,7 +64,6 @@
                 name="PostTaak"
                 method="POST"
                 uriPattern="/taak" />
-
         </Receiver>
 
         <Pipeline>
@@ -50,7 +73,7 @@
                 <Exit name="Exception" state="ERROR" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
+            <JsonPipe name="JsonToXml"/>
 
             <XmlValidatorPipe name="ValidateInputMessage" root="root"
                 schema="xsd/ValidatePostTaakInput.xsd">
