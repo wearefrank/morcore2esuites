@@ -11,19 +11,19 @@
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
                 <Exit name="Reject" state="REJECTED"/>
-                <Exit name="failure" state="ERROR"/>
+                <Exit name="Exception" state="ERROR"/>
              </Exits>
             
             <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
             <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
                 <Forward name="success" path="XmlToJson"/>
-                <Forward name="failure" path="failure"/>
+                <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
             
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Reject"/>
+                <Forward name="failure" path="Exception"/>
             </JsonPipe>
         </Pipeline>
     </Adapter>
@@ -39,21 +39,21 @@
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
                 <Exit name="Reject" state="REJECTED"/>
-                <Exit name="failure" state="ERROR"/>
+                <Exit name="Exception" state="ERROR"/>
              </Exits>
 
             <FixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
 
             <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
                 <Forward name="success" path="TaakType"/>
-                <Forward name="failure" path="failure"/>
+                <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
         
             <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Reject"/>
+                <Forward name="failure" path="Exception"/>
             </JsonPipe>
         </Pipeline>
     </Adapter>
