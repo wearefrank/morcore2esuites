@@ -14,11 +14,12 @@
                 <Exit name="failure" state="ERROR"/>
              </Exits>
             
-            <fixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
+            <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
-                <Forward name="jsonpipe" path="XmlToJson"/>
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
+                <Forward name="success" path="XmlToJson"/>
                 <Forward name="failure" path="failure"/>
+            </XmlValidatorPipe>
             
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
@@ -41,14 +42,14 @@
                 <Exit name="failure" state="ERROR"/>
              </Exits>
 
-            <fixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
+            <FixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
-                <Forward name="XSLTCheck" path="TaakType"/>
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
+                <Forward name="success" path="TaakType"/>
                 <Forward name="failure" path="failure"/>
+            </XmlValidatorPipe>
         
-            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl">
-            </XsltPipe>
+            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
