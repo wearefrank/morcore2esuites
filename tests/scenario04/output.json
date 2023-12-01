@@ -1,0 +1,33 @@
+{
+    "items": [
+        {
+            "_links": {
+                "self": {
+                    "href": "https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz"
+                }
+            },
+            "uuid": "xxxx-yyyy-zzz",
+            "omschrijving": "Ophalen grofvuil groot",
+            "toelichting": "Grofvuil wordt opgehaald met een knijpkraan. Geschikt voor bijvoorbeeld grote kasten, koelkast, wasmachine.",
+            "additionele_informatie": ""
+        },
+        {
+            "_links": {
+                "self": {
+                    "href": "https://taakapplicatie.tld/taaktypes/aaaa-ssss-dddd"
+                }
+            },
+            "uuid": "aaaa-ssss-dddd",
+            "omschrijving": "Repareren straatverlichting",
+            "toelichting": "Verlichting in lichtmast doet het niet. Niet gebruiken voor gevaarlijke situaties.",
+            "additionele_informatie": [
+                {
+                    "veld": "lichtmast nummer"
+                },
+                {
+                    "veld": "werking gecontroleerd in observ"
+                }
+            ]
+        }
+    ]
+}
