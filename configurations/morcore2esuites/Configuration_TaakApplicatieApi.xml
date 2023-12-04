@@ -139,8 +139,8 @@
         </Pipeline>
     </Adapter>
 
+    <!-- We do not process this, so we just return 501 -->
     <Adapter name="Action_PostTaakCommunicatie">
-        <!-- TODO: Figure out what this is -->
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"
@@ -151,23 +151,10 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" />
-                <Exit name="Reject" state="REJECTED" />
-                <Exit name="Exception" state="ERROR" />
+                <Exit name="Reject" state="REJECTED" code="501" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <XmlValidatorPipe name="ValidateInputMessage" root="root"
-                schema="xsd/ValidatePostCommunicatieInput.xsd">
-                <Forward name="failure" path="Reject" />
-                <Forward name="error" path="Exception" />
-            </XmlValidatorPipe>
-
-            <XsltPipe name="CreatePostCommunicatieResponse"
-                styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented"/>
         </Pipeline>
     </Adapter>
 
