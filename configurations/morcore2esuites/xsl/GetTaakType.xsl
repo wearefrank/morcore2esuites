@@ -5,7 +5,7 @@
     <xsl:param name="uuid" />
 
     <xsl:template match="/">
-    <root>
+        <root>
         <_links>
             <self>
                 <href>
@@ -20,6 +20,6 @@
         <omschrijving>Repareren straatverlichting</omschrijving>
         <toelichting>Verlichting in lichtmast doet het niet. Niet gebruiken voor gevaarlijke situaties.</toelichting>
         <additionele_informatie>~</additionele_informatie>
-    </root>
+        </root>
     </xsl:template>
 </xsl:stylesheet>

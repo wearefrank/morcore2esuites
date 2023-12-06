@@ -11,18 +11,18 @@
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
                 <Exit name="Reject" state="REJECTED"/>
-                <Exit name="failure" state="ERROR"/>
+                <Exit name="Exception" state="ERROR"/>
              </Exits>
             
             <fixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
+           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
                 <Forward name="jsonpipe" path="XmlToJson"/>
-                <Forward name="failure" path="failure"/>
+                <Forward name="failure" path="Exception"/> 
             
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Reject"/>
+                <Forward name="failure" path="Exception"/>
             </JsonPipe>
         </Pipeline>
     </Adapter>
@@ -38,21 +38,20 @@
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
                 <Exit name="Reject" state="REJECTED"/>
-                <Exit name="failure" state="ERROR"/>
+                <Exit name="Exception" state="ERROR"/>
              </Exits>
 
             <fixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
-
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
-                <Forward name="XSLTCheck" path="TaakType"/>
-                <Forward name="failure" path="failure"/>
         
-            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl">
-            </XsltPipe>
+            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
+            
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakType.xsd" root="root"/>
+                <Forward name="XmlToJson" path="XmlToJson"/>
+                <Forward name="failure" path="Exception"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Reject"/>
+                <Forward name="failure" path="Exception"/>
             </JsonPipe>
         </Pipeline>
     </Adapter>
@@ -160,7 +159,7 @@
             <XmlValidatorPipe name="ValidateInputMessage" root="root"
                 schema="xsd/ValidatePostCommunicatieInput.xsd">
                 <Forward name="failure" path="Reject" />
-                <Forward name="error" path="Exception" />
+                <Forward name="Error" path="Exception" />
             </XmlValidatorPipe>
 
             <XsltPipe name="CreatePostCommunicatieResponse"
