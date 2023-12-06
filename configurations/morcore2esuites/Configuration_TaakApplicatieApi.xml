@@ -16,8 +16,9 @@
             
             <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
+           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
                 <Forward name="success" path="XmlToJson"/>
+                <Forward name="exception" path="Exception"/>
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
             
@@ -48,7 +49,7 @@
                 <Forward name="success" path="TaakType"/>
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
-        
+  
             <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
@@ -57,7 +58,6 @@
             </JsonPipe>
         </Pipeline>
     </Adapter>
-
 
     <Adapter name="Action_PostTaak">
         <Receiver name="PostTaak">
@@ -139,8 +139,8 @@
         </Pipeline>
     </Adapter>
 
+    <!-- We do not process this, so we just return 501 -->
     <Adapter name="Action_PostTaakCommunicatie">
-        <!-- TODO: Figure out what this is -->
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"
@@ -151,23 +151,10 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" />
-                <Exit name="Reject" state="REJECTED" />
-                <Exit name="Exception" state="ERROR" />
+                <Exit name="Reject" state="REJECTED" code="501" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <XmlValidatorPipe name="ValidateInputMessage" root="root"
-                schema="xsd/ValidatePostCommunicatieInput.xsd">
-                <Forward name="failure" path="Reject" />
-                <Forward name="error" path="Exception" />
-            </XmlValidatorPipe>
-
-            <XsltPipe name="CreatePostCommunicatieResponse"
-                styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented"/>
         </Pipeline>
     </Adapter>
 

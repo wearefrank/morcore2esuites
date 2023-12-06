@@ -1,0 +1,27 @@
+{
+  "_links": {
+      "melding": {
+          "href": "https://mor-core.tld/melding/1234-5678"
+      }
+  },
+  "items": {
+      "_links": {
+          "self": {
+              "href": ""
+          },
+          "communicatie": {
+              "href": ""
+          }
+      },
+      "uuid": "",
+      "taaktype": "",
+      "taakapplicatie": "",
+      "bericht": "",
+      "status": "",
+      "laatst_ontvangen_update": "",
+      "additionele_informatie": {
+          "veld": "",
+          "waarde": ""
+      }
+  }
+}
