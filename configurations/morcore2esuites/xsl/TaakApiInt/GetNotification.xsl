@@ -12,10 +12,10 @@
                         <xsl:value-of select="/root/items/_links/self/href"/>
                     </href>
                 </self>
-                <uuid>
-                    <xsl:value-of select="/root/items/uuid"/>
-                </uuid>
             </_links>
+            <uuid>
+                <xsl:value-of select="/root/items/uuid"/>
+            </uuid>
         </root>
     </xsl:template>
 </xsl:stylesheet>

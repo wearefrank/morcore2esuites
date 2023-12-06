@@ -13,10 +13,10 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
-              <xs:element type="xs:string" name="uuid"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element type="xs:string" name="uuid"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

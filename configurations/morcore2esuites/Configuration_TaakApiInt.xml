@@ -9,7 +9,8 @@
 
             <Exits>
                 <Exit name="Exit" state="SUCCESS"/>
-                <Exit name="failure" state="REJECTED"/>
+                <Exit name="Failure" state="ERROR"/>
+                <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
         <SenderPipe name="Send2MorCore">
@@ -18,26 +19,26 @@
         </SenderPipe>
 
         <JsonPipe name="Json2Xml" direction="JSON2XML" prettyPrint="true">
-            <Forward name="success" path="JuisteFormat"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="success" path="CorrectFormat"/>
+            <Forward name="exception" path="failure"/>
         </JsonPipe>
 
-        <XsltPipe name="JuisteFormat" styleSheetName="xsl/TaakApiInt/GetNotification.xsl" outputType="XML">
+        <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotification.xsl" outputType="XML">
             <Forward name="success" path="XmlCheck"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="exception" path="failure"/>
         </XsltPipe>
 
         <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMelding.xsd" root="root">
             <Forward name="success" path="Xml2Json"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="failure" path="Reject"/>
         </XmlValidatorPipe>
 
         <JsonPipe name="Xml2Json" direction="XML2JSON">
             <Forward name="success" path="Exit"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="exception" path="Failure"/>
         </JsonPipe>
 
-        <!-- Mogelijke config update mogelijk ZIE HIERONDER!
+        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. When the config runs look for quality upgrades. LOOK BELOW!
 
         <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotification.xsl">
             <Forward name="success" path="JsonValidator"/>
@@ -61,35 +62,37 @@
 
             <Exits>
                 <Exit name="Exit" state="SUCCESS"/>
-                <Exit name="failure" state="REJECTED"/>
+                <Exit name="Failure" state="ERROR"/>
+                <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
         <SenderPipe name="Send2MorCore">
             <HttpSender name="GetNotificationTasks" methodType="GET" url="/melding/{meldingUuid}/taakopdracht"/>
             <Forward name="success" path="Json2Xml"/>
+            <Forward name="exception" path="Failure"/>
         </SenderPipe>
 
         <JsonPipe name="Json2Xml" direction="JSON2XML" prettyPrint="true">
-            <Forward name="success" path="JuisteFormat"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="success" path="CorrectFormat"/>
+            <Forward name="exception" path="Failure"/>
         </JsonPipe>
 
-        <XsltPipe name="JuisteFormat" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl" outputType="XML">
+        <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl" outputType="XML">
             <Forward name="success" path="XmlCheck"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="exception" path="Failure"/>
         </XsltPipe>
 
         <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMeldingTaak.xsd" root="root">
             <Forward name="success" path="Xml2Json"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="failure" path="Reject"/>
         </XmlValidatorPipe>
 
         <JsonPipe name="Xml2Json" direction="XML2JSON">
             <Forward name="success" path="Exit"/>
-            <Forward name="Exception" path="failure"/>
+            <Forward name="exception" path="Failure"/>
         </JsonPipe>
 
-        <!-- Mogelijke config update mogelijk ZIE HIERONDER!
+        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. When the config runs look for quality upgrades. LOOK BELOW!
             
             <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl">
             <Forward name="success" path="JsonValidator"/>
@@ -113,37 +116,40 @@
 
             <Exits>
                 <Exit name="Exit" state="SUCCESS"/>
-                <Exit name="Exception" state="ERROR"/>
+                <Exit name="Failure" state="ERROR"/>
+                <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
-        <!-- xsltpipe om format kloppend te maken voor verzending -->
+        <!-- <FixedResultPipe name="Input" filename="C:\Users\SeppeBerghuis\Documents\workspace\morcore2esuites\tests\scenario09\Input.json"/> -->
+    
         <JsonXsltPipe name="FormatMorCore" styleSheetName="xsl/TaakApiInt/PostNewTask.xsl">
             <Forward name="success" path="JsonInputValidator"/>
-            <Forward name="failure" path="Exception"/>
+            <Forward name="exception" path="Failure"/>
         </JsonXsltPipe>
 
-        <Json2XmlValidatorPipe name="JsonInputValidator" schema="xsd/TaakApiInt/ValidatePostTaakInput.xsd" root="root" outputFormat="JSON">
+        <Json2XmlValidatorPipe name="JsonInputValidator" schema="xsd/TaakApiInt/ValidatePostTaakInput.xsd" root="root" outputFormat="XML">
             <Forward name="success" path="SendToMorCore"/>
-            <Forward name="failure" path="Exception"/>
+            <Forward name="failure" path="Reject"/>
         </Json2XmlValidatorPipe> 
 
         <SenderPipe name="SendToMorCore">
             <IbisLocalSender name="PostNewTaakopdracht" javaListener="Request_PostZaak"/>
         </SenderPipe>
 
-        <!-- xsltpipe om format kloppend te maken voor Esuites-->
         <JsonXsltPipe name="FormatEsuites" styleSheetName="xsl/TaakApiInt/PostNewTaskResponse.xsl">
             <Forward name="success" path="JsonOutputValidator"/>
-            <Forward name="failure" path="Exception"/>
+            <Forward name="exception" path="Failure"/>
         </JsonXsltPipe>
 
         <Json2XmlValidatorPipe name="JsonOutputValidator" schema="xsd/TaakApiInt/ValidatePostTaakOutput.xsd" root="root">
             <Forward name="success" path="Exit"/>
-            <Forward name="failure" path="Exception"/>
+            <Forward name="failure" path="Reject"/>
         </Json2XmlValidatorPipe> 
         
         </Pipeline>
     </Adapter>
+
+    <!-- TODO: Make NewResponse_TaskNotification -->
 
     <Adapter name="NewResponse_TaskNotification">
         <Receiver name="Response_TaskNotification">

@@ -1,24 +1,28 @@
 {
     "_links": {
-      "self": {
-        "href": "https://mor-core.tld/melding/1234-5678/taakopdracht/672-334-abc"
-      },
       "melding": {
         "href": "https://mor-core.tld/melding/1234-5678"
-      }
-    },
-    "taakapplicatie": null,
-    "taak_url": "https://taakapplicatie.tld/taak/aaa-bbbb-cccc/",
-    "verstuurd": null,
-    "status": null,
-    "laatste_update_ontvangen": null,
-    "taaktype": "https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz",
-    "titel": "Reparatie verlichting 2381-3",
-    "bericht": "Graag oppakken",
-    "additionele_informatie": [
-      {
-        "veld": "lichtmast_nummer",
-        "waarde": "2381-3"
-      }
-    ]
+      },
+      "items": null,
+      "_links": {
+        "self": {
+          "href": null
+        },
+        "communicatie": {
+          "href": null
+        }
+      },
+      "uuid": "1234-5678",
+      "taaktype": null,
+      "taakapplicatie": null,
+      "bericht": null,
+      "status": null,
+      "laatst_ontvangen_update": null,
+      "additionele_informatie": [
+        {
+          "veld": null,
+          "waarde": null
+        }
+      ]
+    }
   }

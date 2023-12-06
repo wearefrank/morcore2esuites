@@ -16,9 +16,9 @@
             
             <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
-
+           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
                 <Forward name="success" path="XmlToJson"/>
+                <Forward name="exception" path="Exception"/>
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
             
@@ -58,7 +58,6 @@
             </JsonPipe>
         </Pipeline>
     </Adapter>
-
 
     <Adapter name="Action_PostTaak">
         <Receiver name="PostTaak">
