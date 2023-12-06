@@ -16,9 +16,10 @@
             
             <fixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root"/>
+           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
                 <Forward name="jsonpipe" path="XmlToJson"/>
                 <Forward name="failure" path="Exception"/> 
+            </XmlValidatorPipe>
             
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
@@ -45,9 +46,10 @@
         
             <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
             
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakType.xsd" root="root"/>
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakType.xsd" root="root">
                 <Forward name="XmlToJson" path="XmlToJson"/>
                 <Forward name="failure" path="Exception"/>
+            </XmlValidatorPipe>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
@@ -149,23 +151,10 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" />
-                <Exit name="Reject" state="REJECTED" />
-                <Exit name="Exception" state="ERROR" />
+                <Exit name="Reject" state="REJECTED" code="501" />
             </Exits>
 
-            <JsonPipe name="JsonToXml" />
-
-            <XmlValidatorPipe name="ValidateInputMessage" root="root"
-                schema="xsd/ValidatePostCommunicatieInput.xsd">
-                <Forward name="failure" path="Reject" />
-                <Forward name="Error" path="Exception" />
-            </XmlValidatorPipe>
-
-            <XsltPipe name="CreatePostCommunicatieResponse"
-                styleSheetName="xsl/GetTaakTypeResponse.xsl">
-                <Param name="uuid" sessionKey="uuid" />
-            </XsltPipe>
+            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented"/>
         </Pipeline>
     </Adapter>
 
