@@ -14,9 +14,10 @@
                 <Exit name="Exception" state="ERROR"/>
              </Exits>
             
-            <fixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
+            <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
 
-           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
+
                 <Forward name="success" path="XmlToJson"/>
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
@@ -48,7 +49,7 @@
                 <Forward name="success" path="TaakType"/>
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
-
+  
             <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
@@ -139,8 +140,8 @@
         </Pipeline>
     </Adapter>
 
+    <!-- We do not process this, so we just return 501 -->
     <Adapter name="Action_PostTaakCommunicatie">
-        <!-- TODO: Figure out what this is -->
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"
