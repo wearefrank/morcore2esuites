@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <items>
+        <_links>
+            <self>
+                <href>https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz</href>
+            <communicatie></communicatie>
+            <melding></melding>
+                <href></href>
+            </self>
+        </_links>
+        <uuid>xxxx-yyyy-zzz</uuid>
+        <taaktype></taaktype>
+        <taakapplicatie></taakapplicatie>
+        <taakUrl></taakUrl>
+        <titel></titel>
+        <bericht></bericht>
+        <status></status>
+        <omschrijving>Ophalen grofvuil groot</omschrijving>
+        <toelichting>Grofvuil wordt opgehaald met een knijpkraan. Geschikt voor bijvoorbeeld grote kasten, koelkast, wasmachine.</toelichting>
+        <additionele_informatie />
+    </items>
+</root>

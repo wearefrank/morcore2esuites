@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <melding></melding>
+    <taakopdracht></taakopdracht>
+    <taaktype>https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz</taaktype>
+    <titel>Reparatie verlichting 2381-3</titel>
+    <bericht>Graag oppakken</bericht>
+    <additionele_informatie>
+        <veld>lichtmast_nummer</veld>
+        <waarde>2381-3</waarde>    
+    </additionele_informatie>
+</root>
