@@ -151,7 +151,7 @@
 
     <!-- TODO: Make NewResponse_TaskNotification -->
 
-    <Adapter name="NewResponse_TaskNotification">
+    <Adapter name="NewResponse_TaskNotification" active="false">
         <Receiver name="Response_TaskNotification">
             <JavaListener name="Response_TaskNotification"/>
         </Receiver>
