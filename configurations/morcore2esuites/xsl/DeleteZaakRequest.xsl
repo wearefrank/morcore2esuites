@@ -3,11 +3,18 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
     <xsl:param name="uuid" />
+    <xsl:param name="systemDate" />
 
     <xsl:template match="/">
-        <zaak>string</zaak>
-        <statustype>string</statustype>
-        <datumStatusGezet>2023-11-21T08:25:41.255Z</datumStatusGezet>
-        <statustoelichting>string</statustoelichting>
+        <root>
+            <!-- TODO: Obtain from URL -->
+            <zaak>string</zaak>
+            <!-- TODO: Check which ones Esuites supports -->
+            <statustype>EINDSTATUS</statustype>
+            <datumStatusGezet>
+                <xsl:value-of select="$systemDate" />
+            </datumStatusGezet>
+            <statustoelichting>string</statustoelichting>
+        </root>
     </xsl:template>
 </xsl:stylesheet>

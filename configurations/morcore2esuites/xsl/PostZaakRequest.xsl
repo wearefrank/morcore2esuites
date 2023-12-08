@@ -10,7 +10,7 @@
             <bronorganisatie>string</bronorganisatie>
             <omschrijving>string</omschrijving>
             <toelichting>string</toelichting>
-            <zaaktype>string</zaaktype>
+            <zaaktype><xsl:value-of select="//taaktype"/></zaaktype>
             <registratiedatum>2023-11-21</registratiedatum>
             <verantwoordelijkeOrganisatie>string</verantwoordelijkeOrganisatie>
             <startdatum>2023-11-21</startdatum>
