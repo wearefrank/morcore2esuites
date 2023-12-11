@@ -1,6 +1,6 @@
 <Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
-    <Adapter name="Action_ListTaakTypes">
+    <Adapter name="ListTaakTypes">
         <Receiver name="ListTaakTypes">
             <ApiListener
                 name="ListTaakTypes"
@@ -29,7 +29,7 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Action_GetTaakType">
+    <Adapter name="GetTaakType">
         <Receiver name="GetTaakType">
             <ApiListener
                 name="GetTaakType"
@@ -50,7 +50,7 @@
                 <Forward name="failure" path="Reject"/>
             </XmlValidatorPipe>
   
-            <XsltPipe name="TaakType" styleSheetName="xsl/GetTaakType.xsl"/>
+            <XsltPipe name="TaakType" styleSheetName="xsl/TaakApplicatieApi/GetTaakType.xsl"/>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit"/>
@@ -59,7 +59,7 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Action_PostTaak">
+    <Adapter name="PostTaak">
         <Receiver name="PostTaak">
             <ApiListener
                 name="PostTaak"
@@ -82,13 +82,13 @@
                 <Forward name="error" path="Exception" />
             </XmlValidatorPipe>
 
-            <SenderPipe name="Request_PostZaak">
-                <IbisLocalSender javaListener="Request_PostZaak" />
+            <SenderPipe name="SwitchConfiguration">
+                <IbisLocalSender javaListener="ESB_PostZaak" />
             </SenderPipe>
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Action_DeleteTaak">
+    <Adapter name="DeleteTaak">
         <Receiver name="DeleteTaak">
             <ApiListener
                 name="DeleteTaak"
@@ -113,12 +113,12 @@
             </XmlValidatorPipe>
 
             <SenderPipe name="SwitchConfiguration">
-                <IbisLocalSender javaListener="Request_DeleteZaak" />
+                <IbisLocalSender javaListener="ESB_DeleteZaak" />
             </SenderPipe>
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Action_GetTaak">
+    <Adapter name="GetTaak">
         <Receiver name="GetTaak">
             <ApiListener
                 name="GetTaak"
@@ -134,13 +134,13 @@
             <JsonPipe name="JsonToXml" />
 
             <SenderPipe name="SwitchConfiguration">
-                <IbisLocalSender javaListener="Request_GetZaak" />
+                <IbisLocalSender javaListener="ESB_GetZaak" />
             </SenderPipe>
         </Pipeline>
     </Adapter>
 
     <!-- We do not process this, so we just return 501 -->
-    <Adapter name="Action_PostTaakCommunicatie">
+    <Adapter name="PostTaakCommunicatie">
         <Receiver name="PostTaakCommunicatie">
             <ApiListener
                 name="PostTaakCommunicatie"

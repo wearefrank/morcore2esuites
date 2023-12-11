@@ -1,8 +1,8 @@
 <Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
-    <Adapter name="Request_DeleteZaak">
-        <Receiver name="Request_DeleteZaak">
-            <JavaListener name="Request_DeleteZaak" />
+    <Adapter name="ESB_DeleteZaak">
+        <Receiver name="ESB_DeleteZaak">
+            <JavaListener name="ESB_DeleteZaak" />
         </Receiver>
 
         <Pipeline>
@@ -17,7 +17,7 @@
             <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
             xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" />
             
-            <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/DeleteZaakRequest.xsl">
+            <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/ESBZGWApi/DeleteZaakRequest.xsl">
                 <Param name="currentDate" sessionKey="systemDate" />
             </XsltPipe>
             
@@ -36,9 +36,9 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="Request_PostZaak">
-        <Receiver name="Request_PostZaak">
-            <JavaListener name="Request_PostZaak" />
+    <Adapter name="ESB_PostZaak">
+        <Receiver name="ESB_PostZaak">
+            <JavaListener name="ESB_PostZaak" />
         </Receiver>
 
         <Pipeline>
@@ -72,7 +72,7 @@
                 getInputFromFixedValue="TestValue">
             </PutInSessionPipe>
 
-            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl"
+            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/ESBZGWApi/PostZaakRequest.xsl"
                 getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
                 <Param name="meldingInfo" sessionKey="meldingInfo" />
@@ -95,10 +95,9 @@
         </Pipeline>
     </Adapter>
 
-    <!-- TODO: Create test case. -->
-    <Adapter name="Request_GetZaak">
-        <Receiver name="Request_GetZaak">
-            <JavaListener name="Request_GetZaak" />
+    <Adapter name="ESB_GetZaak">
+        <Receiver name="ESB_GetZaak">
+            <JavaListener name="ESB_GetZaak" />
         </Receiver>
 
         <Pipeline>
@@ -107,7 +106,7 @@
             </Exits>
 
             <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak.  -->
-            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/GetZaakRequest.xsl"
+            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/ESBZGWApi/GetZaakRequest.xsl"
                 getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
                 <Param name="meldingInfo" sessionKey="meldingInfo" />
