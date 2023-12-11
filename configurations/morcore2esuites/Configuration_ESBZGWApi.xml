@@ -95,6 +95,7 @@
         </Pipeline>
     </Adapter>
 
+    <!-- TODO: Create test case. -->
     <Adapter name="Request_GetZaak">
         <Receiver name="Request_GetZaak">
             <JavaListener name="Request_GetZaak" />
@@ -106,6 +107,12 @@
             </Exits>
 
             <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak.  -->
+            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/GetZaakRequest.xsl"
+                getInputFromSessionKey="originalMessage">
+                <Param name="currentDate" sessionKey="systemDate" />
+                <Param name="meldingInfo" sessionKey="meldingInfo" />
+                <Param name="opdrachtInfo" sessionKey="opdrachtInfo" />
+            </XsltPipe>
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
