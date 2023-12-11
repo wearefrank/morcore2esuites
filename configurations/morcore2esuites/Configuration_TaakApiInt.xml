@@ -38,7 +38,8 @@
             <Forward name="exception" path="Exception"/>
         </JsonPipe>
 
-        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. When the config runs look for quality upgrades. LOOK BELOW!
+        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe.
+        UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source code is fixed!
 
         <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotification.xsl">
             <Forward name="success" path="JsonValidator"/>
@@ -92,7 +93,8 @@
             <Forward name="exception" path="Exception"/>
         </JsonPipe>
 
-        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. When the config runs look for quality upgrades. LOOK BELOW!
+        <!-- Possible config update: There is a inconsistency in the .json file and the .xml file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. 
+        UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source code is fixed!
             
             <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl">
             <Forward name="success" path="JsonValidator"/>
@@ -119,8 +121,6 @@
                 <Exit name="Exception" state="ERROR"/>
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
-
-        <!-- <FixedResultPipe name="Input" filename="C:\Users\SeppeBerghuis\Documents\workspace\morcore2esuites\tests\scenario09\Input.json"/> -->
 
         <JsonPipe name="json2xml">
             <Forward name="success" path="FormatMorCore"/>
@@ -193,7 +193,7 @@
         </Pipeline>
     </Adapter>
 
-    <!-- TODO: Look for possible responses and maken xsl and xsd-->
+    <!-- Pipeline only sends a notification of a change. Can not validate message because there is no body. -->
 
     <Adapter name="NewResponse_TaskNotification" active="false">
         <Receiver name="Response_TaskNotification">
@@ -208,32 +208,11 @@
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
-        <JsonPipe name="json2xmlResponse">
-            <Forward name="success" path="NotificationCheck"/>
-            <Forward name="exception" path="Exception"/>
-        </JsonPipe>
-
-        <XsltPipe name="NotificationCheck" styleSheetName="">
-            <Forward name="success" path="NotificationValidator"/>
-            <Forward name="exception" path="Exception"/>
-        </XsltPipe>
-
-        <XmlValidatorPipe name="NotificationValidator" schema="">
-            <Forward name="success" path="EsuitesValidator"/>
-            <Forward name="exception" path="Exception"/>
-        </XmlValidatorPipe>
-
         <SenderPipe name="Send2MorCore">
             <HttpSender name="SendNotification" methodType="POST" url="/melding/{meldingUuid}/taakopdracht/{taakOpdrachtUuid}/notificatie"/>
-            <Forward name="success" path="UpdateSucces"/>
-            <Forward name="exception" path="UpdateError"/>
-        </SenderPipe>
-
-        <FixedResultPipe name="UpdateSucces" returnString="HTTP/1.1 204 OK">
             <Forward name="success" path="Exit"/>
-
-        <FixedResultPipe name="UpdateError" returnString="HTTP/1.1 500 Internal Server Error error: Taak informatie kan niet opgehaald worden">
-            <Forward name="success" path="Exception"/>
+            <Forward name="exception" path="Exception"/>
+        </SenderPipe>
 
         </Pipeline>
     </Adapter>
