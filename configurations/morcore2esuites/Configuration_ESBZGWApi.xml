@@ -8,21 +8,22 @@
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
             </Exits>
-
-            <!-- TODO: Make dynamic -->
-
+            
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
-
+            
             <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
-                xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" />
-
-            <XsltPipe name="CreatePostZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/PostZaakRequest.xsl">
+            xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" />
+            
+            <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/DeleteZaakRequest.xsl">
                 <Param name="currentDate" sessionKey="systemDate" />
             </XsltPipe>
-
+            
             <JsonPipe name="XmlToJson" direction="XML2JSON" />
-
+            
+            <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak. -->
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST" url="/statussen"
                     headersParams="X-Audit-Toelichting">
@@ -45,19 +46,37 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <!-- TODO: Make dynamic -->
-
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
+
+            <!-- TODO: Replace with ibislocalsender once Seppe's branch has been merged. -->
+            <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo">
+                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                    headersParams="Accept-Crs,Content-Crs">
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
+                </HttpSender>
+            </SenderPipe>
+
+            <!-- TODO: Replace with ibislocalsender once Seppe's branch has been merged. -->
+            <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo">
+                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                    headersParams="Accept-Crs,Content-Crs">
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
+                </HttpSender>
+            </SenderPipe>
 
             <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader"
                 getInputFromFixedValue="TestValue">
-                <!-- <Param name="value" sessionKey="originalMessage"
-                xpathExpression="//Toelichting" /> -->
             </PutInSessionPipe>
 
             <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/PostZaakRequest.xsl"
                 getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
+                <Param name="meldingInfo" sessionKey="meldingInfo" />
+                <Param name="opdrachtInfo" sessionKey="opdrachtInfo" />
             </XsltPipe>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON" />
@@ -76,6 +95,7 @@
         </Pipeline>
     </Adapter>
 
+    <!-- TODO: Create test case. -->
     <Adapter name="Request_GetZaak">
         <Receiver name="Request_GetZaak">
             <JavaListener name="Request_GetZaak" />
@@ -86,9 +106,13 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
-            <!-- TODO: Make dynamic -->
-
-            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+            <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak.  -->
+            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/GetZaakRequest.xsl"
+                getInputFromSessionKey="originalMessage">
+                <Param name="currentDate" sessionKey="systemDate" />
+                <Param name="meldingInfo" sessionKey="meldingInfo" />
+                <Param name="opdrachtInfo" sessionKey="opdrachtInfo" />
+            </XsltPipe>
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"

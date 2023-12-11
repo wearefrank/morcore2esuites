@@ -6,22 +6,27 @@
 
     <xsl:template match="/">
         <root>
+            <!-- TODO: Make dynamic. -->
+            <url>string</url>
+            <uuid>3fa85f64-5717-4562-b3fc-2c963f66afa6</uuid>
             <identificatie>string</identificatie>
             <bronorganisatie>string</bronorganisatie>
             <omschrijving>string</omschrijving>
             <toelichting>string</toelichting>
-            <zaaktype><xsl:value-of select="//taaktype"/></zaaktype>
-            <registratiedatum>2023-11-21</registratiedatum>
+            <zaaktype>string</zaaktype>
+            <registratiedatum>2023-12-11</registratiedatum>
             <verantwoordelijkeOrganisatie>string</verantwoordelijkeOrganisatie>
-            <startdatum>2023-11-21</startdatum>
-            <einddatumGepland>2023-11-21</einddatumGepland>
-            <uiterlijkeEinddatumAfdoening>2023-11-21</uiterlijkeEinddatumAfdoening>
-            <publicatiedatum>2023-11-21</publicatiedatum>
+            <startdatum>2023-12-11</startdatum>
+            <einddatum>2023-12-11</einddatum>
+            <einddatumGepland>2023-12-11</einddatumGepland>
+            <uiterlijkeEinddatumAfdoening>2023-12-11</uiterlijkeEinddatumAfdoening>
+            <publicatiedatum>2023-12-11</publicatiedatum>
             <communicatiekanaal>string</communicatiekanaal>
             <productenOfDiensten>string</productenOfDiensten>
             <vertrouwelijkheidaanduiding>openbaar</vertrouwelijkheidaanduiding>
             <betalingsindicatie>nvt</betalingsindicatie>
-            <laatsteBetaaldatum>2023-11-21T14:25:35.511Z</laatsteBetaaldatum>
+            <betalingsindicatieWeergave>string</betalingsindicatieWeergave>
+            <laatsteBetaaldatum>2023-12-11T08:51:19.639Z</laatsteBetaaldatum>
             <zaakgeometrie>
                 <type>Point</type>
             </zaakgeometrie>
@@ -35,17 +40,21 @@
             </opschorting>
             <selectielijstklasse>string</selectielijstklasse>
             <hoofdzaak>string</hoofdzaak>
+            <deelzaken>string</deelzaken>
             <relevanteAndereZaken>
                 <url>string</url>
                 <aardRelatie>vervolg</aardRelatie>
             </relevanteAndereZaken>
+            <eigenschappen>string</eigenschappen>
+            <status>string</status>
             <kenmerken>
                 <kenmerk>string</kenmerk>
                 <bron>string</bron>
             </kenmerken>
             <archiefnominatie>blijvend_bewaren</archiefnominatie>
             <archiefstatus>nog_te_archiveren</archiefstatus>
-            <archiefactiedatum>2023-11-21</archiefactiedatum>
+            <archiefactiedatum>2023-12-11</archiefactiedatum>
+            <resultaat>string</resultaat>
         </root>
     </xsl:template>
 </xsl:stylesheet>
