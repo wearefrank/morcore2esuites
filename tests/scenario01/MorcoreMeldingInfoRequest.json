@@ -1,0 +1,11 @@
+<root>
+	<melding>https://mor-core.tld/melding/1234-1234-1234</melding>
+	<taakopdracht>https://mor-core.tld/melding/1234-1234-1234/taakopdracht/5678-5678-5678</taakopdracht>
+	<taaktype>https://taakapplicatie.tld/taaktypes/xxxx-yyyy-zzz</taaktype>
+	<titel>Reparatie verlichting 2381-3</titel>
+	<bericht>Graag oppakken</bericht>
+	<additionele_informatie>
+		<veld>lichtmast_nummer</veld>
+		<waarde>2381-3</waarde>
+	</additionele_informatie>
+</root>
