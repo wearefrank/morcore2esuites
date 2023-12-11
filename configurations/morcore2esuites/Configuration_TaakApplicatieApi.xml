@@ -131,6 +131,8 @@
                 <Exit name="Exit" state="SUCCESS" />
             </Exits>
 
+            <JsonPipe name="JsonToXml" />
+
             <SenderPipe name="SwitchConfiguration">
                 <IbisLocalSender javaListener="Request_GetZaak" />
             </SenderPipe>
