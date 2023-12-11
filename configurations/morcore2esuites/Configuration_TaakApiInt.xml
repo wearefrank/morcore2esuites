@@ -121,8 +121,56 @@
             </Exits>
 
         <!-- <FixedResultPipe name="Input" filename="C:\Users\SeppeBerghuis\Documents\workspace\morcore2esuites\tests\scenario09\Input.json"/> -->
-    
-        <JsonXsltPipe name="FormatMorCore" styleSheetName="xsl/TaakApiInt/PostNewTask.xsl">
+
+        <JsonPipe name="json2xml">
+            <Forward name="success" path="FormatMorCore"/>
+            <Forward name="exception" path="Exception"/>
+        </JsonPipe>
+
+        <XsltPipe name="FormatMorCore" styleSheetName="xsl/TaakApiInt/PostNewTask.xsl">
+            <Forward name="success" path="MorCoreValidator"/>
+            <Forward name="exception" path="Exception"/>
+        </XsltPipe>
+
+        <XmlValidatorPipe name="MorCoreValidator" schema="xsd/TaakApiInt/ValidatePostTaakInput.xsd" root="root">
+            <Forward name="success" path="SendToMorCore"/>
+            <Forward name="failure" path="Reject"/>
+        </XmlValidatorPipe>
+
+        <!-- CreatePostZaakRequest can not transform Json -->
+
+        <!-- <JsonPipe name="xml2json" direction="XML2JSON">
+            <Forward name="success" path="SendToMorCore"/>
+            <Forward name="exception" path="Exception"/>
+        </JsonPipe> -->
+
+        <SenderPipe name="SendToMorCore">
+            <IbisLocalSender name="PostNewTaakopdracht" javaListener="Request_PostZaak"/>
+        </SenderPipe>
+
+        <JsonPipe name="json2xmlResponse">
+            <Forward name="success" path="FormatEsuites"/>
+            <Forward name="exception" path="Exception"/>
+        </JsonPipe>
+
+        <XsltPipe name="FormatEsuites" styleSheetName="xsl/TaakApiInt/PostNewTaskResponse.xsl" xsltVersion="3">
+            <Forward name="success" path="EsuitesValidator"/>
+            <Forward name="exception" path="Exception"/>
+        </XsltPipe>
+
+        <XmlValidatorPipe name="EsuitesValidator" schema="xsd/TaakApiInt/ValidatePostTaakOutput.xsd" root="root">
+            <Forward name="success" path="xml2jsonResponse"/>
+            <Forward name="failure" path="Reject"/>
+        </XmlValidatorPipe>
+
+        <JsonPipe name="xml2jsonResponse" direction="XML2JSON">
+            <Forward name="success" path="Exit"/>
+            <Forward name="exception" path="Exception"/>
+        </JsonPipe>
+
+        <!-- JsonXsltPipe is broken java code does not make sense. -->
+
+        <!-- <JsonXsltPipe name="FormatMorCore" styleSheetName="xsl/TaakApiInt/PostNewTask.xsl" xsltVersion="3">
             <Forward name="success" path="JsonInputValidator"/>
             <Forward name="exception" path="Exception"/>
         </JsonXsltPipe>
@@ -130,13 +178,9 @@
         <Json2XmlValidatorPipe name="JsonInputValidator" schema="xsd/TaakApiInt/ValidatePostTaakInput.xsd" root="root">
             <Forward name="success" path="SendToMorCore"/>
             <Forward name="failure" path="Reject"/>
-        </Json2XmlValidatorPipe> 
+        </Json2XmlValidatorPipe>  -->
 
-        <SenderPipe name="SendToMorCore">
-            <IbisLocalSender name="PostNewTaakopdracht" javaListener="Request_PostZaak"/>
-        </SenderPipe>
-
-        <JsonXsltPipe name="FormatEsuites" styleSheetName="xsl/TaakApiInt/PostNewTaskResponse.xsl">
+        <!-- <JsonXsltPipe name="FormatEsuites" styleSheetName="xsl/TaakApiInt/PostNewTaskResponse.xsl" xsltVersion="3">
             <Forward name="success" path="JsonOutputValidator"/>
             <Forward name="exception" path="Exception"/>
         </JsonXsltPipe>
@@ -144,12 +188,12 @@
         <Json2XmlValidatorPipe name="JsonOutputValidator" schema="xsd/TaakApiInt/ValidatePostTaakOutput.xsd" root="root">
             <Forward name="success" path="Exit"/>
             <Forward name="failure" path="Reject"/>
-        </Json2XmlValidatorPipe> 
+        </Json2XmlValidatorPipe>  -->
         
         </Pipeline>
     </Adapter>
 
-    <!-- TODO: Make NewResponse_TaskNotification -->
+    <!-- TODO: Look for possible responses and maken xsl and xsd-->
 
     <Adapter name="NewResponse_TaskNotification">
         <Receiver name="Response_TaskNotification">
@@ -163,6 +207,33 @@
                 <Exit name="Exception" state="ERROR"/>
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
+
+        <JsonPipe name="json2xmlResponse">
+            <Forward name="success" path="NotificationCheck"/>
+            <Forward name="exception" path="Exception"/>
+        </JsonPipe>
+
+        <XsltPipe name="NotificationCheck" styleSheetName="">
+            <Forward name="success" path="NotificationValidator"/>
+            <Forward name="exception" path="Exception"/>
+        </XsltPipe>
+
+        <XmlValidatorPipe name="NotificationValidator" schema="">
+            <Forward name="success" path="EsuitesValidator"/>
+            <Forward name="exception" path="Exception"/>
+        </XmlValidatorPipe>
+
+        <SenderPipe name="Send2MorCore">
+            <HttpSender name="SendNotification" methodType="POST" url="/melding/{meldingUuid}/taakopdracht/{taakOpdrachtUuid}/notificatie"/>
+            <Forward name="success" path="UpdateSucces"/>
+            <Forward name="exception" path="UpdateError"/>
+        </SenderPipe>
+
+        <FixedResultPipe name="UpdateSucces" returnString="HTTP/1.1 204 OK">
+            <Forward name="success" path="Exit"/>
+
+        <FixedResultPipe name="UpdateError" returnString="HTTP/1.1 500 Internal Server Error error: Taak informatie kan niet opgehaald worden">
+            <Forward name="success" path="Exception"/>
 
         </Pipeline>
     </Adapter>
