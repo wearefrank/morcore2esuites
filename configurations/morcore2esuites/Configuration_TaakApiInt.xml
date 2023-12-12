@@ -13,8 +13,10 @@
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
+        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotification" methodType="GET" url="/melding/{uuid}"/>
+            <HttpSender name="GetNotification" methodType="GET" url="/melding/${meldingUuid}"/>
+                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
             <Forward name="success" path="Json2Xml"/>
         </SenderPipe>
 
@@ -66,9 +68,12 @@
                 <Exit name="Exception" state="ERROR"/>
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
+        
+        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
 
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotificationTasks" methodType="GET" url="/melding/{meldingUuid}/taakopdracht"/>
+            <HttpSender name="GetNotificationTasks" methodType="GET" url="/melding/${meldingUuid}/taakopdracht"/>
+                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
             <Forward name="success" path="Json2Xml"/>
             <Forward name="exception" path="Exception"/>
         </SenderPipe>
@@ -119,13 +124,17 @@
         <Pipeline>
 
             <Exits>
-                <Exit name="Exit" state="SUCCESS"/>
-                <Exit name="Exception" state="ERROR"/>
+                <Exit name="Exit" state="SUCCESS" code="204"/>
+                <Exit name="Exception" state="ERROR" code="500"/>
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
+        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
+
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="SendNotification" methodType="POST" url="/melding/{meldingUuid}/taakopdracht/{taakOpdrachtUuid}/notificatie"/>
+            <HttpSender name="SendNotification" methodType="POST" url="/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
+                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="taakOpdrachtUuid" sessionkey="originalMessage" xpathExpression="//taakOpdrachtUuid"/>
             <Forward name="success" path="Exit"/>
             <Forward name="exception" path="Exception"/>
         </SenderPipe>
