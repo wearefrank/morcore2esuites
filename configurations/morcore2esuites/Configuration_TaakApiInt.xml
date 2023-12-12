@@ -13,10 +13,10 @@
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
-        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotification" methodType="GET" url="/melding/${meldingUuid}"/>
+            <HttpSender name="GetNotification" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}"/>
                 <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="url" value="${MorCore.taak.API.root-url}"/>
             <Forward name="success" path="Json2Xml"/>
         </SenderPipe>
 
@@ -68,12 +68,11 @@
                 <Exit name="Exception" state="ERROR"/>
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
-        
-        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
 
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotificationTasks" methodType="GET" url="/melding/${meldingUuid}/taakopdracht"/>
+            <HttpSender name="GetNotificationTasks" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht"/>
                 <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="url" value="${MorCore.taak.API.root-url}"/>
             <Forward name="success" path="Json2Xml"/>
             <Forward name="exception" path="Exception"/>
         </SenderPipe>
@@ -129,10 +128,9 @@
                 <Exit name="Reject" state="REJECTED"/>
             </Exits>
 
-        <!-- TO DO: Add Url Param with Root-url as value when in test-environment -->
-
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="SendNotification" methodType="POST" url="/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
+            <HttpSender name="SendNotification" methodType="POST" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
+                <Param name="url" value="${MorCore.taak.API.root-url}"/>
                 <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
                 <Param name="taakOpdrachtUuid" sessionkey="originalMessage" xpathExpression="//taakOpdrachtUuid"/>
             <Forward name="success" path="Exit"/>
