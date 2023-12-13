@@ -15,12 +15,12 @@
 
         <SenderPipe name="Send2MorCore">
             <HttpSender name="GetNotification" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}"/>
-                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
                 <Param name="url" value="${MorCore.taak.API.root-url}"/>
             <Forward name="success" path="Json2Xml"/>
         </SenderPipe>
 
-        <JsonPipe name="Json2Xml" direction="JSON2XML" prettyPrint="true">
+        <JsonPipe name="Json2Xml" prettyPrint="true">
             <Forward name="success" path="CorrectFormat"/>
             <Forward name="exception" path="Exception"/>
         </JsonPipe>
@@ -71,7 +71,7 @@
 
         <SenderPipe name="Send2MorCore">
             <HttpSender name="GetNotificationTasks" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht"/>
-                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
                 <Param name="url" value="${MorCore.taak.API.root-url}"/>
             <Forward name="success" path="Json2Xml"/>
             <Forward name="exception" path="Exception"/>
@@ -131,8 +131,8 @@
         <SenderPipe name="Send2MorCore">
             <HttpSender name="SendNotification" methodType="POST" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
                 <Param name="url" value="${MorCore.taak.API.root-url}"/>
-                <Param name="meldingUuid" sessionkey="originalMessage" xpathExpression="//meldingUuid"/>
-                <Param name="taakOpdrachtUuid" sessionkey="originalMessage" xpathExpression="//taakOpdrachtUuid"/>
+                <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
+                <Param name="taakOpdrachtUuid" sessionKey="originalMessage" xpathExpression="//taakOpdrachtUuid"/>
             <Forward name="success" path="Exit"/>
             <Forward name="exception" path="Exception"/>
         </SenderPipe>
