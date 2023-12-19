@@ -14,9 +14,9 @@
             </Exits>
 
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotification" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}"/>
+            <HttpSender name="GetNotification" methodType="GET"/>
                 <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
-                <Param name="url" value="${MorCore.taak.API.root-url}"/>
+                <Param name="url" value="${MorCore.taak.API.root-url}/melding/${meldingUuid}"/>
             <Forward name="success" path="Json2Xml"/>
         </SenderPipe>
 
@@ -70,9 +70,9 @@
             </Exits>
 
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="GetNotificationTasks" methodType="GET" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht"/>
+            <HttpSender name="GetNotificationTasks" methodType="GET" />
                 <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
-                <Param name="url" value="${MorCore.taak.API.root-url}"/>
+                <Param name="url" value="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht"/>
             <Forward name="success" path="Json2Xml"/>
             <Forward name="exception" path="Exception"/>
         </SenderPipe>
@@ -115,7 +115,7 @@
 
     <!-- Pipeline only sends a notification of a change. Can not validate message because there is no body. -->
 
-    <Adapter name="NewResponse_TaskNotification" active="false">
+    <Adapter name="NewResponse_TaskNotification" >
         <Receiver name="Response_TaskNotification">
             <JavaListener name="Response_TaskNotification"/>
         </Receiver>
@@ -129,8 +129,8 @@
             </Exits>
 
         <SenderPipe name="Send2MorCore">
-            <HttpSender name="SendNotification" methodType="POST" url="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
-                <Param name="url" value="${MorCore.taak.API.root-url}"/>
+            <HttpSender name="SendNotification" methodType="POST" />
+                <Param name="url" value="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie"/>
                 <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
                 <Param name="taakOpdrachtUuid" sessionKey="originalMessage" xpathExpression="//taakOpdrachtUuid"/>
             <Forward name="success" path="Exit"/>

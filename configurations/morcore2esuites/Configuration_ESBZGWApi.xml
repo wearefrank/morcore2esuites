@@ -46,19 +46,19 @@
                 <Forward name="interrupt" path="interrupt"/>
             </SenderPipe>
 
-            <FixedResultPipe name="exception" filename="ErrorResponses\BadRequest.json">
+            <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
                 <Forward name="success" path="BadRequest"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="timeout" filename="ErrorResponses\ServerError.json">
+            <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
                 <Forward name="success" path="ServerError"/>
             </FixedResultPipe>
             
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses\Forbidden.json">
+            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
                 <Forward name="success" path="Forbidden"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="interrupt" filename="ErrorResponses\Conflict.json">
+            <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
                 <Forward name="success" path="Conflict"/>
             </FixedResultPipe>
 
@@ -129,7 +129,7 @@
                 <Forward name="exception" path="exception"/>
 
             <SenderPipe name="SendToESB">
-                <HttpSender name="SendToESB" methodType="POST" url="/melding/{meldingUuid}"
+                <HttpSender name="SendToESB" methodType="POST" url="${Esuites.ESB.root-url}/melding/${meldingUuid}"
                     headersParams="X-Audit-Toelichting,Accept-Crs,Content-Crs">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="Accept-Crs" value="EPSG:4326" />
@@ -142,19 +142,19 @@
                 <Forward name="interrupt" path="interrupt"/>
             </SenderPipe>
 
-            <FixedResultPipe name="exception" filename="ErrorResponses\BadRequest.json">
+            <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
                 <Forward name="success" path="BadRequest"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="timeout" filename="ErrorResponses\ServerError.json">
+            <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
                 <Forward name="success" path="ServerError"/>
             </FixedResultPipe>
             
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses\Forbidden.json">
+            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
                 <Forward name="success" path="Forbidden"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="interrupt" filename="ErrorResponses\Conflict.json">
+            <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
                 <Forward name="success" path="Conflict"/>
             </FixedResultPipe>
 
@@ -199,19 +199,19 @@
                 <Forward name="interrupt" path="interrupt"/>
             </SenderPipe>
 
-            <FixedResultPipe name="exception" filename="ErrorResponses\BadRequest.json">
+            <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
                 <Forward name="success" path="BadRequest"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="timeout" filename="ErrorResponses\ServerError.json">
+            <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
                 <Forward name="success" path="ServerError"/>
             </FixedResultPipe>
             
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses\Forbidden.json">
+            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
                 <Forward name="success" path="Forbidden"/>
             </FixedResultPipe>
 
-            <FixedResultPipe name="interrupt" filename="ErrorResponses\Conflict.json">
+            <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
                 <Forward name="success" path="Conflict"/>
             </FixedResultPipe>
             
