@@ -33,12 +33,13 @@
             
             <JsonPipe name="XmlToJson" direction="XML2JSON" />
             
-            <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak. -->
             <SenderPipe name="SendToESB">
-                <HttpSender name="SendToESB" methodType="POST" url="/statussen"
+                <ibislocalsender name="SendToESB" methodType="POST"
                     headersParams="X-Audit-Toelichting">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
-                </HttpSender>
+                    <Param name="statussenUuid" sessionKey="originalMessage" xpathExpression="//statussenUuid"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/statussen/${statussenUuid}"/>
+                </ibislocalsender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -80,30 +81,30 @@
             </Exits>
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
-
-            <!-- TODO: Replace with ibislocalsender once Seppe's branch has been merged. -->
+            
             <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo">
-                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                <ibislocalsender name="SendToESB" methodType="GET" 
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
-                </HttpSender>
+                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                </ibislocalsender>
                 <Forward name="success" path="RequestOpdrachtInfo"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
                 <Forward name="illigalResult" path="illigalResult"/>
                 <Forward name="interrupt" path="interrupt"/>
             </SenderPipe>
-
-            <!-- TODO: Replace with ibislocalsender once Seppe's branch has been merged. -->
+            
             <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo">
-                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                <ibislocalsender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
-                </HttpSender>
+                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                </ibislocalsender>
                 <Forward name="success" path="StoreToelichtingHeader"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -127,14 +128,17 @@
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="SendToESB"/>
                 <Forward name="exception" path="exception"/>
+            </JsonPipe>
 
             <SenderPipe name="SendToESB">
-                <HttpSender name="SendToESB" methodType="POST" url="${Esuites.ESB.root-url}/melding/${meldingUuid}"
+                <ibislocalsender name="SendToESB" methodType="POST"
                     headersParams="X-Audit-Toelichting,Accept-Crs,Content-Crs">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                </HttpSender>
+                    <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/melding/${meldingUuid}"/>
+                </ibislocalsender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -175,7 +179,6 @@
                 <Exit name="ServerError" state="ERROR" code="500"/>
             </Exits>
 
-            <!-- TODO: Get uuid from the url. Marcel advised to get the code for this from OpenZaak.  -->
             <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/ESBZGWApi/GetZaakRequest.xsl"
                 getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
@@ -186,12 +189,13 @@
             </XsltPipe>
 
             <SenderPipe name="SendToESB">
-                <HttpSender name="SendToESB" methodType="GET" url="/zaken/${uuid}"
+                <ibislocalsender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="uuid" sessionKey="originalMessage" xpathExpression="//uuid" />
-                </HttpSender>
+                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                </ibislocalsender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
