@@ -27,7 +27,7 @@
             
             <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/ESBZGWApi/DeleteZaakRequest.xsl">
                 <Param name="currentDate" sessionKey="systemDate" />
-                <Forward name="success" path="SendToESB"/>
+                <Forward name="success" path="XmlToJson"/>
                 <Forward name="exception" path="exception"/>
             </XsltPipe>
             
@@ -35,12 +35,12 @@
 
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
-                <Ibislocalsender name="SendToESB" methodType="POST"
+                <HttpSender name="SendToESB" methodType="POST"
                     headersParams="X-Audit-Toelichting">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="statussenUuid" sessionKey="originalMessage" xpathExpression="//statussenUuid"/>
                     <Param name="url" value="${Esuites.ESB.root-url}/statussen/${statussenUuid}"/>
-                </Ibislocalsender>
+                </HttpSender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -85,13 +85,13 @@
             
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo">
-                <Ibislocalsender name="SendToESB" methodType="GET" 
+                <HttpSender name="SendToESB" methodType="GET" 
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
                     <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
-                </Ibislocalsender>
+                </HttpSender>
                 <Forward name="success" path="RequestOpdrachtInfo"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -101,13 +101,13 @@
             
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo">
-                <Ibislocalsender name="SendToESB" methodType="GET"
+                <HttpSender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
                     <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
-                </Ibislocalsender>
+                </HttpSender>
                 <Forward name="success" path="StoreToelichtingHeader"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -135,14 +135,14 @@
 
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
-                <Ibislocalsender name="SendToESB" methodType="POST"
+                <HttpSender name="SendToESB" methodType="POST"
                     headersParams="X-Audit-Toelichting,Accept-Crs,Content-Crs">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
                     <Param name="url" value="${Esuites.ESB.root-url}/melding/${meldingUuid}"/>
-                </Ibislocalsender>
+                </HttpSender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
@@ -194,13 +194,13 @@
 
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
-                <Ibislocalsender name="SendToESB" methodType="GET"
+                <HttpSender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
                     <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
-                </Ibislocalsender>
+                </HttpSender>
                 <Forward name="success" path="Exit"/>
                 <Forward name="exception" path="exception"/>
                 <Forward name="timeout" path="timeout"/>
