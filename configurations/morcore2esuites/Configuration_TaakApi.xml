@@ -1,0 +1,129 @@
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
+
+    <Adapter name="MorCore_GetMelding">
+        <Receiver name="MorCore_GetMelding">
+            <JavaListener name="MorCore_GetMelding" />
+        </Receiver>
+
+        <Pipeline>
+
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Exception" state="ERROR" />
+                <Exit name="Reject" state="REJECTED" />
+            </Exits>
+
+            <SenderPipe name="Send2MorCore">
+                <HttpSender name="Send2MorCore" methodType="GET" />
+                <Param name="meldingUuid" sessionKey="originalMessage"
+                    xpathExpression="//meldingUuid" />
+                <Param name="url" value="${MorCore.taak.API.root-url}/melding/${meldingUuid}" />
+                <Forward name="success" path="Json2Xml" />
+            </SenderPipe>
+
+            <JsonPipe name="Json2Xml" prettyPrint="true">
+                <Forward name="success" path="CorrectFormat" />
+                <Forward name="exception" path="Exception" />
+            </JsonPipe>
+
+            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotification.xsl"
+                outputType="XML">
+                <Forward name="success" path="XmlCheck" />
+                <Forward name="exception" path="Exception" />
+            </XsltPipe>
+
+            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMelding.xsd"
+                root="root">
+                <Forward name="success" path="Xml2Json" />
+                <Forward name="failure" path="Reject" />
+            </XmlValidatorPipe>
+
+            <JsonPipe name="Xml2Json" direction="XML2JSON">
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="Exception" />
+            </JsonPipe>
+
+            <!-- Possible config update: There is a inconsistency in the .json file and the .xml
+            file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe.
+        UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source
+            code is fixed!
+
+        <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotification.xsl">
+            <Forward name="success" path="JsonValidator"/>
+            <Forward name="Exception" path="failure"/>
+        </JsonXsltPipe>
+
+        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApiInt/ValidateGetMelding.xsd"
+            root="root" inputFormatSessionKey="InputFormat" outputFormat="JSON">
+            <Forward name="success" path="Exit"/>
+            <Forward name="Exception" path="failure"/>
+        </Json2XmlValidatorPipe> -->
+
+        </Pipeline>
+    </Adapter>
+
+    <Adapter name="MorCore_GetTaakOpdracht">
+        <Receiver name="MorCore_GetTaakOpdracht">
+            <JavaListener name="MorCore_GetTaakOpdracht" />
+        </Receiver>
+
+        <Pipeline>
+
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" />
+                <Exit name="Exception" state="ERROR" />
+                <Exit name="Reject" state="REJECTED" />
+            </Exits>
+
+            <SenderPipe name="Send2MorCore">
+                <HttpSender name="Send2MorCore" methodType="GET" />
+                <Param name="meldingUuid" sessionKey="originalMessage"
+                    xpathExpression="//meldingUuid" />
+                <Param name="url"
+                    value="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht" />
+                <Forward name="success" path="Json2Xml" />
+                <Forward name="exception" path="Exception" />
+            </SenderPipe>
+
+            <JsonPipe name="Json2Xml" prettyPrint="true">
+                <Forward name="success" path="CorrectFormat" />
+                <Forward name="exception" path="Exception" />
+            </JsonPipe>
+
+            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl"
+                outputType="XML">
+                <Forward name="success" path="XmlCheck" />
+                <Forward name="exception" path="Exception" />
+            </XsltPipe>
+
+            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMeldingTaak.xsd"
+                root="root">
+                <Forward name="success" path="Xml2Json" />
+                <Forward name="failure" path="Reject" />
+            </XmlValidatorPipe>
+
+            <JsonPipe name="Xml2Json" direction="XML2JSON">
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="Exception" />
+            </JsonPipe>
+
+            <!-- Possible config update: There is a inconsistency in the .json file and the .xml
+            file after internal transformation of the JsonXsltPipe and Json2XmlValidatorPipe. 
+        UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source
+            code is fixed!
+            
+            <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl">
+            <Forward name="success" path="JsonValidator"/>
+            <Forward name="failure" path="Exception"/>
+        </JsonXsltPipe>
+
+        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApiInt/ValidateGetMeldingTaak.xsd"
+            root="root" inputFormatSessionKey="InputFormat" outputFormat="JSON">
+            <Forward name="success" path="Exit"/>
+            <Forward name="failure" path="Exception"/>
+        </Json2XmlValidatorPipe>  -->
+
+        </Pipeline>
+    </Adapter>
+</Module>

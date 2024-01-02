@@ -1,12 +1,14 @@
 <!DOCTYPE configuration [
-    <!ENTITY TaakReceiver SYSTEM "./Configuration_TaakApplicatieApi.xml">
-    <!ENTITY ZGWSender SYSTEM "./Configuration_ESBZGWApi.xml">
-    <!ENTITY NotificatieReceiver SYSTEM "./Configuration_TaakApiInt.xml">
+    <!ENTITY TaakApplicatieApi SYSTEM "./Configuration_TaakApplicatieApi.xml">
+    <!ENTITY TaakApi SYSTEM "./Configuration_TaakApi.xml">
+    <!ENTITY ESBZGWApi SYSTEM "./Configuration_ESBZGWApi.xml">
+    <!ENTITY NotificatieApi SYSTEM "./Configuration_NotificatieApi.xml">
 ]>
 
 
 <Configuration>
-    &TaakReceiver;
-    &ZGWSender;
-    &NotificatieReceiver;
+    &TaakApplicatieApi;
+    &TaakApi;
+    &ESBZGWApi;
+    &NotificatieApi;
 </Configuration>

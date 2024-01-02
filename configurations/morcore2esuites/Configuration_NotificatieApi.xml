@@ -1,0 +1,34 @@
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
+
+    <!-- Pipeline only sends a notification of a change. Can not validate message because there is
+    no body. -->
+
+    <Adapter name="Frank_PostNotificatie">
+        <Receiver name="Frank_PostNotificatie">
+            <JavaListener name="Frank_PostNotificatie" />
+        </Receiver>
+
+        <Pipeline>
+
+            <Exits>
+                <Exit name="Exit" state="SUCCESS" code="204" />
+                <Exit name="Exception" state="ERROR" code="500" />
+                <Exit name="Reject" state="REJECTED" />
+            </Exits>
+
+            <SenderPipe name="Send2MorCore">
+                <HttpSender name="Send2MorCore" methodType="POST" />
+                <Param name="url"
+                    value="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie" />
+                <Param name="meldingUuid" sessionKey="originalMessage"
+                    xpathExpression="//meldingUuid" />
+                <Param name="taakOpdrachtUuid" sessionKey="originalMessage"
+                    xpathExpression="//taakOpdrachtUuid" />
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="Exception" />
+            </SenderPipe>
+
+        </Pipeline>
+    </Adapter>
+</Module>

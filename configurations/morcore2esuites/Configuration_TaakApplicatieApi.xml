@@ -1,68 +1,70 @@
 <Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../FrankConfig.xsd">
-    <Adapter name="ListTaakTypes">
-        <Receiver name="ListTaakTypes">
+    <Adapter name="Frank_ListTaakTypes">
+        <Receiver name="Frank_ListTaakTypes">
             <ApiListener
-                name="ListTaakTypes"
+                name="Frank_ListTaakTypes"
                 uriPattern="/taaktypes" />
         </Receiver>
 
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
-                <Exit name="Reject" state="REJECTED"/>
-                <Exit name="Exception" state="ERROR"/>
-             </Exits>
-            
-            <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml"/>
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
+            </Exits>
 
-           <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
-                <Forward name="success" path="XmlToJson"/>
-                <Forward name="exception" path="Exception"/>
-                <Forward name="failure" path="Reject"/>
+            <FixedResultPipe name="InputTaaktypesLijst" filename="responses/ZaakTypes.xml" />
+
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd"
+                root="root">
+                <Forward name="success" path="XmlToJson" />
+                <Forward name="exception" path="Exception" />
+                <Forward name="failure" path="Reject" />
             </XmlValidatorPipe>
-            
+
             <JsonPipe name="XmlToJson" direction="XML2JSON">
-                <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Exception"/>
+                <Forward name="success" path="Exit" />
+                <Forward name="failure" path="Exception" />
             </JsonPipe>
         </Pipeline>
     </Adapter>
 
-    <Adapter name="GetTaakType">
-        <Receiver name="GetTaakType">
+    <Adapter name="Frank_GetTaakType">
+        <Receiver name="Frank_GetTaakType">
             <ApiListener
-                name="GetTaakType"
-                uriPattern="/taaktypes/{uuid}"/>
+                name="Frank_GetTaakType"
+                uriPattern="/taaktypes/{uuid}" />
         </Receiver>
 
         <Pipeline>
             <Exits>
                 <Exit name="Exit" state="SUCCESS" />
-                <Exit name="Reject" state="REJECTED"/>
-                <Exit name="Exception" state="ERROR"/>
-             </Exits>
+                <Exit name="Reject" state="REJECTED" />
+                <Exit name="Exception" state="ERROR" />
+            </Exits>
 
-            <FixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml"/>
+            <FixedResultPipe name="InputTaakType" filename="responses/ZaakTypes.xml" />
 
-            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd" root="root">
-                <Forward name="success" path="TaakType"/>
-                <Forward name="failure" path="Reject"/>
+            <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd"
+                root="root">
+                <Forward name="success" path="TaakType" />
+                <Forward name="failure" path="Reject" />
             </XmlValidatorPipe>
-  
-            <XsltPipe name="TaakType" styleSheetName="xsl/TaakApplicatieApi/GetTaakType.xsl"/>
+
+            <XsltPipe name="TaakType" styleSheetName="xsl/TaakApplicatieApi/GetTaakType.xsl" />
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
-                <Forward name="success" path="Exit"/>
-                <Forward name="failure" path="Exception"/>
+                <Forward name="success" path="Exit" />
+                <Forward name="failure" path="Exception" />
             </JsonPipe>
         </Pipeline>
     </Adapter>
 
-    <Adapter name="PostTaak">
-        <Receiver name="PostTaak">
+    <Adapter name="Frank_PostTaak">
+        <Receiver name="Frank_PostTaak">
             <ApiListener
-                name="PostTaak"
+                name="Frank_PostTaak"
                 method="POST"
                 uriPattern="/taak" />
         </Receiver>
@@ -74,7 +76,7 @@
                 <Exit name="Exception" state="ERROR" />
             </Exits>
 
-            <JsonPipe name="JsonToXml"/>
+            <JsonPipe name="JsonToXml" />
 
             <XmlValidatorPipe name="ValidateInputMessage" root="root"
                 schema="xsd/ValidatePostTaakInput.xsd">
@@ -88,10 +90,10 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="DeleteTaak">
-        <Receiver name="DeleteTaak">
+    <Adapter name="Frank_DeleteTaak">
+        <Receiver name="Frank_DeleteTaak">
             <ApiListener
-                name="DeleteTaak"
+                name="Frank_DeleteTaak"
                 method="DELETE"
                 uriPattern="/taak/{uuid}" />
 
@@ -118,10 +120,10 @@
         </Pipeline>
     </Adapter>
 
-    <Adapter name="GetTaak">
-        <Receiver name="GetTaak">
+    <Adapter name="Frank_GetTaak">
+        <Receiver name="Frank_GetTaak">
             <ApiListener
-                name="GetTaak"
+                name="Frank_GetTaak"
                 uriPattern="/taak/{uuid}" />
 
         </Receiver>
@@ -140,10 +142,10 @@
     </Adapter>
 
     <!-- We do not process this, so we just return 501 -->
-    <Adapter name="PostTaakCommunicatie">
-        <Receiver name="PostTaakCommunicatie">
+    <Adapter name="Frank_PostTaakCommunicatie">
+        <Receiver name="Frank_PostTaakCommunicatie">
             <ApiListener
-                name="PostTaakCommunicatie"
+                name="Frank_PostTaakCommunicatie"
                 method="POST"
                 uriPattern="/taak/{uuid}/communicatie" />
 
@@ -154,7 +156,7 @@
                 <Exit name="Reject" state="REJECTED" code="501" />
             </Exits>
 
-            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented"/>
+            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented" />
         </Pipeline>
     </Adapter>
 
