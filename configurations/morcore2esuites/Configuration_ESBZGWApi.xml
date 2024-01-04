@@ -7,61 +7,74 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" code="201"/>
-                <Exit name="BadRequest" state="ERROR" code="400"/>
-                <Exit name="Forbidden" state="ERROR" code="403"/>
-                <Exit name="Conflict" state="ERROR" code="409"/>
-                <Exit name="ServerError" state="ERROR" code="500"/>
+                <Exit name="Exit" state="SUCCESS" code="201" />
+                <Exit name="BadRequest" state="ERROR" code="400" />
+                <Exit name="Forbidden" state="ERROR" code="403" />
+                <Exit name="Conflict" state="ERROR" code="409" />
+                <Exit name="ServerError" state="ERROR" code="500" />
             </Exits>
-            
-            <PutSystemDateInSessionPipe name="StoreSystemDate" >
-                <Forward name="success" path="StoreToelichting"/>
-                <Forward name="exception" path="exception"/>
+
+            <PutSystemDateInSessionPipe name="StoreSystemDate">
+                <Forward name="success" path="StoreToelichting" />
+                <Forward name="exception" path="exception" />
             </PutSystemDateInSessionPipe>
-            
+
             <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
-            xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader" >
-                <Forward name="success" path="CreateDeleteZaakRequest"/>
-                <Forward name="exception" path="exception"/>
+                xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader">
+                <Forward name="success" path="CreateDeleteZaakRequest" />
+                <Forward name="exception" path="exception" />
             </XsltPipe>
-            
-            <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage" styleSheetName="xsl/ESBZGWApi/DeleteZaakRequest.xsl">
+
+            <!-- TODO: Currently, this sender exists to ask for extra info regarding the zaak in
+            question. Need to investigate if MorCore stores info.
+            However, it is unclear whether MorCore stores any information relating to the case in the storage
+            application (Esuites).
+            If MorCore does not store any information or references, we are unable to link their delete request
+            to a specific case. -->
+            <SenderPipe name="RequestGetZaak">
+                <IbisLocalSender name="RequestGetZaak" javaListener="MorCore_GetTaakOpdracht" />
+            </SenderPipe>
+
+            <XsltPipe name="StoreEsuitesReference" xpathExpression="//self/href"
+                storeResultInSessionKey="esuitesReference" />
+
+            <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage"
+                styleSheetName="xsl/ESBZGWApi/DeleteZaakRequest.xsl">
+                <Param name="esuitesReference" sessionKey="esuitesReference" />
                 <Param name="currentDate" sessionKey="systemDate" />
-                <Forward name="success" path="XmlToJson"/>
-                <Forward name="exception" path="exception"/>
+                <Forward name="success" path="XmlToJson" />
+                <Forward name="exception" path="exception" />
             </XsltPipe>
-            
+
             <JsonPipe name="XmlToJson" direction="XML2JSON" />
 
-            <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
                     headersParams="X-Audit-Toelichting">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
-                    <Param name="statussenUuid" sessionKey="originalMessage" xpathExpression="//statussenUuid"/>
-                    <Param name="url" value="${Esuites.ESB.root-url}/statussen/${statussenUuid}"/>
+                    <Param name="url" value="${Esuites.ESB.root-url}/statussen" />
                 </HttpSender>
-                <Forward name="success" path="Exit"/>
-                <Forward name="exception" path="exception"/>
-                <Forward name="timeout" path="timeout"/>
-                <Forward name="illigalResult" path="illigalResult"/>
-                <Forward name="interrupt" path="interrupt"/>
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="exception" />
+                <Forward name="timeout" path="timeout" />
+                <Forward name="illegalResult" path="illegalResult" />
+                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
 
             <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
-                <Forward name="success" path="BadRequest"/>
+                <Forward name="success" path="BadRequest" />
             </FixedResultPipe>
 
             <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
-                <Forward name="success" path="ServerError"/>
+                <Forward name="success" path="ServerError" />
             </FixedResultPipe>
-            
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
-                <Forward name="success" path="Forbidden"/>
+
+            <FixedResultPipe name="illegalResult" filename="ErrorResponses/Forbidden.json">
+                <Forward name="success" path="Forbidden" />
             </FixedResultPipe>
 
             <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
-                <Forward name="success" path="Conflict"/>
+                <Forward name="success" path="Conflict" />
             </FixedResultPipe>
 
         </Pipeline>
@@ -74,54 +87,57 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" code="201"/>
-                <Exit name="BadRequest" state="ERROR" code="400"/>
-                <Exit name="Forbidden" state="ERROR" code="403"/>
-                <Exit name="Conflict" state="ERROR" code="409"/>
-                <Exit name="ServerError" state="ERROR" code="500"/>
+                <Exit name="Exit" state="SUCCESS" code="201" />
+                <Exit name="BadRequest" state="ERROR" code="400" />
+                <Exit name="Forbidden" state="ERROR" code="403" />
+                <Exit name="Conflict" state="ERROR" code="409" />
+                <Exit name="ServerError" state="ERROR" code="500" />
             </Exits>
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
-            
+
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo">
-                <HttpSender name="SendToESB" methodType="GET" 
+                <HttpSender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                    <Param name="zakenUuid" sessionKey="originalMessage"
+                        xpathExpression="//zakenUuid" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
                 </HttpSender>
-                <Forward name="success" path="RequestOpdrachtInfo"/>
-                <Forward name="exception" path="exception"/>
-                <Forward name="timeout" path="timeout"/>
-                <Forward name="illigalResult" path="illigalResult"/>
-                <Forward name="interrupt" path="interrupt"/>
+                <Forward name="success" path="RequestOpdrachtInfo" />
+                <Forward name="exception" path="exception" />
+                <Forward name="timeout" path="timeout" />
+                <Forward name="illegalResult" path="illegalResult" />
+                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
-            
+
             <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo">
                 <HttpSender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                    <Param name="zakenUuid" sessionKey="originalMessage"
+                        xpathExpression="//zakenUuid" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
                 </HttpSender>
-                <Forward name="success" path="StoreToelichtingHeader"/>
-                <Forward name="exception" path="exception"/>
-                <Forward name="timeout" path="timeout"/>
-                <Forward name="illigalResult" path="illigalResult"/>
-                <Forward name="interrupt" path="interrupt"/>
+                <Forward name="success" path="StoreToelichtingHeader" />
+                <Forward name="exception" path="exception" />
+                <Forward name="timeout" path="timeout" />
+                <Forward name="illegalResult" path="illegalResult" />
+                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
 
             <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader"
                 getInputFromFixedValue="TestValue">
-                <Forward name="success" path="CreatePostZaakRequest"/>
-                <Forward name="exception" path="exception"/>
+                <Forward name="success" path="CreatePostZaakRequest" />
+                <Forward name="exception" path="exception" />
             </PutInSessionPipe>
 
-            <XsltPipe name="CreatePostZaakRequest" styleSheetName="xsl/ESBZGWApi/PostZaakRequest.xsl"
+            <XsltPipe name="CreatePostZaakRequest"
+                styleSheetName="xsl/ESBZGWApi/PostZaakRequest.xsl"
                 getInputFromSessionKey="originalMessage">
                 <Param name="currentDate" sessionKey="systemDate" />
                 <Param name="meldingInfo" sessionKey="meldingInfo" />
@@ -129,8 +145,8 @@
             </XsltPipe>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
-                <Forward name="success" path="SendToESB"/>
-                <Forward name="exception" path="exception"/>
+                <Forward name="success" path="SendToESB" />
+                <Forward name="exception" path="exception" />
             </JsonPipe>
 
             <!-- TODO: give correct endpoint -->
@@ -140,30 +156,31 @@
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="meldingUuid" sessionKey="originalMessage" xpathExpression="//meldingUuid"/>
-                    <Param name="url" value="${Esuites.ESB.root-url}/melding/${meldingUuid}"/>
+                    <Param name="meldingUuid" sessionKey="originalMessage"
+                        xpathExpression="//meldingUuid" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/melding/${meldingUuid}" />
                 </HttpSender>
-                <Forward name="success" path="Exit"/>
-                <Forward name="exception" path="exception"/>
-                <Forward name="timeout" path="timeout"/>
-                <Forward name="illigalResult" path="illigalResult"/>
-                <Forward name="interrupt" path="interrupt"/>
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="exception" />
+                <Forward name="timeout" path="timeout" />
+                <Forward name="illegalResult" path="illegalResult" />
+                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
 
             <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
-                <Forward name="success" path="BadRequest"/>
+                <Forward name="success" path="BadRequest" />
             </FixedResultPipe>
 
             <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
-                <Forward name="success" path="ServerError"/>
+                <Forward name="success" path="ServerError" />
             </FixedResultPipe>
-            
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
-                <Forward name="success" path="Forbidden"/>
+
+            <FixedResultPipe name="illegalResult" filename="ErrorResponses/Forbidden.json">
+                <Forward name="success" path="Forbidden" />
             </FixedResultPipe>
 
             <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
-                <Forward name="success" path="Conflict"/>
+                <Forward name="success" path="Conflict" />
             </FixedResultPipe>
 
         </Pipeline>
@@ -174,17 +191,17 @@
             <JavaListener name="ESB_GetZaak" />
         </Receiver>
 
-        <Receiver name="ESB_GetZaak_Internal" >
-            <JavaListener name="ESB_GetZaak_Internal"/>
+        <Receiver name="ESB_GetZaak_Internal">
+            <JavaListener name="ESB_GetZaak_Internal" />
         </Receiver>
 
         <Pipeline>
             <Exits>
-                <Exit name="Exit" state="SUCCESS" code="200"/>
-                <Exit name="BadRequest" state="ERROR" code="400"/>
-                <Exit name="Forbidden" state="ERROR" code="403"/>
-                <Exit name="Conflict" state="ERROR" code="409"/>
-                <Exit name="ServerError" state="ERROR" code="500"/>
+                <Exit name="Exit" state="SUCCESS" code="200" />
+                <Exit name="BadRequest" state="ERROR" code="400" />
+                <Exit name="Forbidden" state="ERROR" code="403" />
+                <Exit name="Conflict" state="ERROR" code="409" />
+                <Exit name="ServerError" state="ERROR" code="500" />
             </Exits>
 
             <!-- TODO: make dynamic -->
@@ -193,8 +210,8 @@
                 <Param name="currentDate" sessionKey="systemDate" />
                 <Param name="meldingInfo" sessionKey="meldingInfo" />
                 <Param name="opdrachtInfo" sessionKey="opdrachtInfo" />
-                <Forward name="success" path="SendToESB"/>
-                <Forward name="exception" path="exception"/>
+                <Forward name="success" path="SendToESB" />
+                <Forward name="exception" path="exception" />
             </XsltPipe>
 
             <!-- TODO: give correct endpoint -->
@@ -203,32 +220,33 @@
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage" xpathExpression="//zakenUuid"/>
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}"/>
+                    <Param name="zakenUuid" sessionKey="originalMessage"
+                        xpathExpression="//zakenUuid" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
                 </HttpSender>
-                <Forward name="success" path="Exit"/>
-                <Forward name="exception" path="exception"/>
-                <Forward name="timeout" path="timeout"/>
-                <Forward name="illigalResult" path="illigalResult"/>
-                <Forward name="interrupt" path="interrupt"/>
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="exception" />
+                <Forward name="timeout" path="timeout" />
+                <Forward name="illegalResult" path="illegalResult" />
+                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
 
             <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
-                <Forward name="success" path="BadRequest"/>
+                <Forward name="success" path="BadRequest" />
             </FixedResultPipe>
 
             <FixedResultPipe name="timeout" filename="ErrorResponses/ServerError.json">
-                <Forward name="success" path="ServerError"/>
+                <Forward name="success" path="ServerError" />
             </FixedResultPipe>
-            
-            <FixedResultPipe name="illigalResult" filename="ErrorResponses/Forbidden.json">
-                <Forward name="success" path="Forbidden"/>
+
+            <FixedResultPipe name="illegalResult" filename="ErrorResponses/Forbidden.json">
+                <Forward name="success" path="Forbidden" />
             </FixedResultPipe>
 
             <FixedResultPipe name="interrupt" filename="ErrorResponses/Conflict.json">
-                <Forward name="success" path="Conflict"/>
+                <Forward name="success" path="Conflict" />
             </FixedResultPipe>
-            
+
         </Pipeline>
     </Adapter>
 
