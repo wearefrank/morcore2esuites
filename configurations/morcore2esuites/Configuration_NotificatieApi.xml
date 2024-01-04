@@ -17,13 +17,22 @@
                 <Exit name="Reject" state="REJECTED" />
             </Exits>
 
+            <JsonPipe name="RequestJson2Xml" />
+
+            <SenderPipe name="RequestGetZaak" storeResultInSessionKey="JsonMessage">
+                <IbisLocalSender name="RequestGetZaak" javaListener="ESB_GetZaak_Internal"/>
+            </SenderPipe>
+
+            <JsonPipe name="ResponseJson2Xml"/>
+
+            <!-- TODO: Check that uuid values are correctly filled -->
             <SenderPipe name="Send2MorCore">
                 <HttpSender name="Send2MorCore" methodType="POST" />
                 <Param name="url"
                     value="${MorCore.taak.API.root-url}/melding/${meldingUuid}/taakopdracht/${taakOpdrachtUuid}/notificatie" />
-                <Param name="meldingUuid" sessionKey="originalMessage"
+                <Param name="meldingUuid"
                     xpathExpression="//meldingUuid" />
-                <Param name="taakOpdrachtUuid" sessionKey="originalMessage"
+                <Param name="taakOpdrachtUuid"
                     xpathExpression="//taakOpdrachtUuid" />
                 <Forward name="success" path="Exit" />
                 <Forward name="exception" path="Exception" />
