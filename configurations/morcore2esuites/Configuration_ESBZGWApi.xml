@@ -21,22 +21,33 @@
 
             <XsltPipe name="StoreToelichting" getInputFromSessionKey="originalMessage"
                 xpathExpression="//reden" storeResultInSessionKey="toelichtingHeader">
-                <Forward name="success" path="CreateDeleteZaakRequest" />
+                <Forward name="success" path="RequestGetMelding" />
                 <Forward name="exception" path="exception" />
             </XsltPipe>
 
             <!-- TODO: Currently, this sender exists to ask for extra info regarding the zaak in
-            question. Need to investigate if MorCore stores info.
+            question. Need to investigate if MorCore stores info. Potentially add the uuid as a param to the
+            senderpipe.
             However, it is unclear whether MorCore stores any information relating to the case in the storage
             application (Esuites).
             If MorCore does not store any information or references, we are unable to link their delete request
             to a specific case. -->
-            <SenderPipe name="RequestGetZaak">
-                <IbisLocalSender name="RequestGetZaak" javaListener="MorCore_GetTaakOpdracht" />
+            <SenderPipe name="RequestGetMelding" getInputFromSessionKey="originalMessage">
+                <IbisLocalSender name="RequestGetMelding" javaListener="MorCore_GetMelding" />
+                <Forward name="success" path="Json2Xml" />
+                <Forward name="exception" path="exception" />
             </SenderPipe>
 
+            <JsonPipe name="Json2Xml" prettyPrint="true">
+                <Forward name="success" path="StoreEsuitesReference" />
+                <Forward name="exception" path="Exception" />
+            </JsonPipe>
+
             <XsltPipe name="StoreEsuitesReference" xpathExpression="//self/href"
-                storeResultInSessionKey="esuitesReference" />
+                storeResultInSessionKey="esuitesReference">
+                <Forward name="success" path="CreateDeleteZaakRequest" />
+                <Forward name="exception" path="exception" />
+            </XsltPipe>
 
             <XsltPipe name="CreateDeleteZaakRequest" getInputFromSessionKey="originalMessage"
                 styleSheetName="xsl/ESBZGWApi/DeleteZaakRequest.xsl">
@@ -46,7 +57,10 @@
                 <Forward name="exception" path="exception" />
             </XsltPipe>
 
-            <JsonPipe name="XmlToJson" direction="XML2JSON" />
+            <JsonPipe name="XmlToJson" direction="XML2JSON">
+                <Forward name="success" path="SendToESB" />
+                <Forward name="exception" path="exception" />
+            </JsonPipe>
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"

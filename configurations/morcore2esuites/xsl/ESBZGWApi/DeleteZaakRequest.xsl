@@ -3,7 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
     <xsl:param name="esuitesReference" />
-    <xsl:param name="systemDate" />
+    <xsl:param name="currentDate" />
 
     <xsl:template match="/">
         <root>
@@ -12,7 +12,7 @@
             </zaak>
             <statustype>AFGESLOTEN</statustype>
             <datumStatusGezet>
-                <xsl:value-of select="$systemDate" />
+                <xsl:value-of select="$currentDate" />
             </datumStatusGezet>
             <statustoelichting>string</statustoelichting>
         </root>

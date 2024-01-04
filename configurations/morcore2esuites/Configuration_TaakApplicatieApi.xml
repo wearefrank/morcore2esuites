@@ -158,10 +158,12 @@
 
         <Pipeline>
             <Exits>
-                <Exit name="Reject" state="REJECTED" code="501" />
+                <Exit name="Exit" state="SUCCESS" code="501" />
             </Exits>
 
-            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented" />
+            <FixedResultPipe name="NotImplemented" returnString="HTTP 501 Not implemented">
+                <Forward name="success" path="Exit" />
+            </FixedResultPipe>
         </Pipeline>
     </Adapter>
 

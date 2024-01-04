@@ -1,6 +1,6 @@
 {
-    "zaak": "string",
-    "statustype": "EINDSTATUS",
-    "datumStatusGezet": "",
+    "zaak": "https://mor-core.tld/melding/1234-5678",
+    "statustype": "AFGESLOTEN",
+    "datumStatusGezet": "2001-12-17T09:30:47CET",
     "statustoelichting": "string"
 }
