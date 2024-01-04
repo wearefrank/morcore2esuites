@@ -48,11 +48,14 @@
 
             <XmlValidatorPipe name="ValidateInputMessage" schema="xsd/validateGetTaakTypes.xsd"
                 root="root">
-                <Forward name="success" path="TaakType" />
+                <Forward name="success" path="GetTaakType" />
                 <Forward name="failure" path="Reject" />
             </XmlValidatorPipe>
 
-            <XsltPipe name="TaakType" styleSheetName="xsl/TaakApplicatieApi/GetTaakType.xsl" />
+            <!-- TODO: Set up proper TaakType system. Currently we just return a static result. -->
+            <XsltPipe name="GetTaakType" styleSheetName="xsl/TaakApplicatieApi/GetTaakType.xsl">
+                <Param name="uuid" sessionKey="uuid" />
+            </XsltPipe>
 
             <JsonPipe name="XmlToJson" direction="XML2JSON">
                 <Forward name="success" path="Exit" />
@@ -115,7 +118,9 @@
             </XmlValidatorPipe>
 
             <SenderPipe name="SwitchConfiguration">
-                <IbisLocalSender javaListener="ESB_DeleteZaak" />
+                <IbisLocalSender javaListener="ESB_DeleteZaak">
+                    <Param name="uuid" sessionKey="uuid" />
+                </IbisLocalSender>
             </SenderPipe>
         </Pipeline>
     </Adapter>
@@ -134,7 +139,9 @@
             </Exits>
 
             <SenderPipe name="SwitchConfiguration">
-                <IbisLocalSender javaListener="ESB_GetZaak" />
+                <IbisLocalSender javaListener="ESB_GetZaak">
+                    <Param name="uuid" sessionKey="uuid" />
+                </IbisLocalSender>
             </SenderPipe>
         </Pipeline>
     </Adapter>
