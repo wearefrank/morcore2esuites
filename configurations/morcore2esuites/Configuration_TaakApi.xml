@@ -27,13 +27,13 @@
                 <Forward name="exception" path="Exception" />
             </JsonPipe>
 
-            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotification.xsl"
+            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApi/GetNotification.xsl"
                 outputType="XML">
                 <Forward name="success" path="XmlCheck" />
                 <Forward name="exception" path="Exception" />
             </XsltPipe>
 
-            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMelding.xsd"
+            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApi/ValidateGetMelding.xsd"
                 root="root">
                 <Forward name="success" path="Xml2Json" />
                 <Forward name="failure" path="Reject" />
@@ -49,12 +49,12 @@
         UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source
             code is fixed!
 
-        <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotification.xsl">
+        <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApi/GetNotification.xsl">
             <Forward name="success" path="JsonValidator"/>
             <Forward name="Exception" path="failure"/>
         </JsonXsltPipe>
 
-        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApiInt/ValidateGetMelding.xsd"
+        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApi/ValidateGetMelding.xsd"
             root="root" inputFormatSessionKey="InputFormat" outputFormat="JSON">
             <Forward name="success" path="Exit"/>
             <Forward name="Exception" path="failure"/>
@@ -91,13 +91,13 @@
                 <Forward name="exception" path="Exception" />
             </JsonPipe>
 
-            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl"
+            <XsltPipe name="CorrectFormat" styleSheetName="xsl/TaakApi/GetNotificationTasks.xsl"
                 outputType="XML">
                 <Forward name="success" path="XmlCheck" />
                 <Forward name="exception" path="Exception" />
             </XsltPipe>
 
-            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApiInt/ValidateGetMeldingTaak.xsd"
+            <XmlValidatorPipe name="XmlCheck" schema="xsd/TaakApi/ValidateGetMeldingTaak.xsd"
                 root="root">
                 <Forward name="success" path="Xml2Json" />
                 <Forward name="failure" path="Reject" />
@@ -113,12 +113,12 @@
         UPDATE: JsonXsltPipe and Json2XmlValidatorPipe are broken in source code. Only update when source
             code is fixed!
             
-            <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApiInt/GetNotificationTasks.xsl">
+            <JsonXsltPipe name="CorrectResponse" styleSheetName="xsl/TaakApi/GetNotificationTasks.xsl">
             <Forward name="success" path="JsonValidator"/>
             <Forward name="failure" path="Exception"/>
         </JsonXsltPipe>
 
-        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApiInt/ValidateGetMeldingTaak.xsd"
+        <Json2XmlValidatorPipe name="JsonValidator" schema="xsd/TaakApi/ValidateGetMeldingTaak.xsd"
             root="root" inputFormatSessionKey="InputFormat" outputFormat="JSON">
             <Forward name="success" path="Exit"/>
             <Forward name="failure" path="Exception"/>
