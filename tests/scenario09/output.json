@@ -1,60 +1,56 @@
 {
-    "url": "string",
+    "_links": {
+        "self": {
+            "href": "string"
+        },
+        "taaktype": {
+            "href": "string"
+        },
+        "melding": {
+            "href": "https://mor-core.tld/melding/1234-1234-1234"
+        },
+        "communcatie": {
+            "href": "https://taakapplicatie.tld/taak/aaaa-bbbb-cccc/communcatie"
+        }
+    },
     "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "identificatie": "string",
-    "bronorganisatie": "string",
-    "omschrijving": "string",
-    "toelichting": "string",
-    "zaaktype": "string",
-    "registratiedatum": "2023-12-11",
-    "verantwoordelijkeOrganisatie": "string",
-    "startdatum": "2023-12-11",
-    "einddatum": "2023-12-11",
-    "einddatumGepland": "2023-12-11",
-    "uiterlijkeEinddatumAfdoening": "2023-12-11",
-    "publicatiedatum": "2023-12-11",
-    "communicatiekanaal": "string",
-    "productenOfDiensten": [
-        "string"
-    ],
-    "vertrouwelijkheidaanduiding": "openbaar",
-    "betalingsindicatie": "nvt",
-    "betalingsindicatieWeergave": "string",
-    "laatsteBetaaldatum": "2023-12-11T08:51:19.639Z",
-    "zaakgeometrie": {
-        "type": "Point"
+    "titel": "string",
+    "bericht": "string",
+    "additionele_informatie": {
+        "veld": "lichtmast_nummer",
+        "waarde": "2381-3"
     },
-    "verlenging": {
-        "reden": "string",
-        "duur": "string"
+    "status": "OPEN",
+    "verloop": {
+        "ontvangstsdatum": "",
+        "streefdatum": "",
+        "plandatum": "",
+        "start_behandeling": "",
+        "afgesloten": ""
     },
-    "opschorting": {
-        "indicatie": true,
-        "reden": "string"
-    },
-    "selectielijstklasse": "string",
-    "hoofdzaak": "string",
-    "deelzaken": [
-        "string"
-    ],
-    "relevanteAndereZaken": [
+    "communicatie": [
         {
-            "url": "string",
-            "aardRelatie": "vervolg"
+            "gemaakt": "",
+            "richting": "Melding naar Taak",
+            "auteur": "Jason Foo",
+            "bericht": "Wat is de status van deze reparatie"
+        },
+        {
+            "gemaakt": "",
+            "richting": "Taak naar Melding",
+            "bericht": "We wachten op een onderdeel, naar verwachting komt deze volgende week binnen"
         }
     ],
-    "eigenschappen": [
-        "string"
-    ],
-    "status": "string",
-    "kenmerken": [
+    "resultaat": [
         {
-            "kenmerk": "string",
-            "bron": "string"
+            "toegang": "intern",
+            "tekst": "",
+            "fotos": "https://...."
+        },
+        {
+            "toegang": "publiek",
+            "tekst": "Opgelost",
+            "fotos": "https://...."
         }
-    ],
-    "archiefnominatie": "blijvend_bewaren",
-    "archiefstatus": "nog_te_archiveren",
-    "archiefactiedatum": "2023-12-11",
-    "resultaat": "string"
+    ]
 }
