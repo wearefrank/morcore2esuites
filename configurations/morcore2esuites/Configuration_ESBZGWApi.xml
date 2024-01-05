@@ -218,32 +218,36 @@
                 <Exit name="ServerError" state="ERROR" code="500" />
             </Exits>
 
-            <!-- TODO: make dynamic -->
-            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/ESBZGWApi/GetZaakRequest.xsl"
-                getInputFromFixedValue="&lt;defaultInput/>">
-                <Param name="currentDate" sessionKey="systemDate" />
-                <Param name="meldingInfo" sessionKey="meldingInfo" />
-                <Param name="opdrachtInfo" sessionKey="opdrachtInfo" />
-                <Forward name="success" path="SendToESB" />
-                <Forward name="exception" path="exception" />
-            </XsltPipe>
-
-            <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="GET"
                     headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage"
-                        xpathExpression="//zakenUuid" />
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
+                    <Param name="uuid" sessionKey="uuid" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${uuid}" />
                 </HttpSender>
-                <Forward name="success" path="Exit" />
+                <Forward name="success" path="Json2XML" />
                 <Forward name="exception" path="exception" />
                 <Forward name="timeout" path="timeout" />
                 <Forward name="illegalResult" path="illegalResult" />
                 <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
+
+            <JsonPipe name="Json2XML">
+                <Forward name="success" path="CreateGetZaakRequest" />
+                <Forward name="exception" path="exception" />
+            </JsonPipe>
+
+            <XsltPipe name="CreateGetZaakRequest" styleSheetName="xsl/ESBZGWApi/GetZaakResponse.xsl">
+                <Param name="currentDate" sessionKey="systemDate" />
+                <Forward name="success" path="Xml2Json" />
+                <Forward name="exception" path="exception" />
+            </XsltPipe>
+
+            <JsonPipe name="Xml2Json" direction="XML2JSON">
+                <Forward name="success" path="Exit" />
+                <Forward name="exception" path="exception" />
+            </JsonPipe>
 
             <FixedResultPipe name="exception" filename="ErrorResponses/BadRequest.json">
                 <Forward name="success" path="BadRequest" />
