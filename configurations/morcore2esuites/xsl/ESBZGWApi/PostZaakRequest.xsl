@@ -8,11 +8,17 @@
 
     <xsl:template match="/">
         <root>
-            <identificatie>string</identificatie>
-            <bronorganisatie>string</bronorganisatie>
-            <omschrijving>string</omschrijving>
-            <toelichting>string</toelichting>
+             <!-- TODO: On the T environment validate if uuid is used for idenification and if this is the correct value. -->
+            <identificatie><xsl:value-of select="//uuid"></identificatie>
+            <!-- TODO: On the T environment validate if this is the correct value. -->
+            <omschrijving><xsl:value-of select="//bericht"></omschrijving>
+            <!-- TODO: On the T environment validate if this is the correct value. -->
             <zaaktype><xsl:value-of select="//taaktype"/></zaaktype>
+
+            <!-- TODO: Make everything below this comment dynamic depending on what information
+            Esuites returns. -->
+            <toelichting>string</toelichting>
+             <bronorganisatie>string</bronorganisatie>
             <registratiedatum>2023-11-21</registratiedatum>
             <verantwoordelijkeOrganisatie>string</verantwoordelijkeOrganisatie>
             <startdatum>2023-11-21</startdatum>
