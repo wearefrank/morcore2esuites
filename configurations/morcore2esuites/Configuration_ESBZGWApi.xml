@@ -110,45 +110,25 @@
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
 
-            <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo">
-                <HttpSender name="SendToESB" methodType="GET"
-                    headersParams="Accept-Crs,Content-Crs">
-                    <Param name="Accept-Crs" value="EPSG:4326" />
-                    <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage"
-                        xpathExpression="//zakenUuid" />
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
-                </HttpSender>
+                <IbisLocalSender name="RequestGetMelding">
+                    <Param name="meldingUuid"
+                        xpathExpression="substring-after(//melding, 'https://mor-core.tld/melding/')" />
+                </IbisLocalSender>
                 <Forward name="success" path="RequestOpdrachtInfo" />
                 <Forward name="exception" path="exception" />
-                <Forward name="timeout" path="timeout" />
-                <Forward name="illegalResult" path="illegalResult" />
-                <Forward name="interrupt" path="interrupt" />
             </SenderPipe>
 
-            <!-- TODO: give correct endpoint -->
             <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo">
-                <HttpSender name="SendToESB" methodType="GET"
-                    headersParams="Accept-Crs,Content-Crs">
-                    <Param name="Accept-Crs" value="EPSG:4326" />
-                    <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="zakenUuid" sessionKey="originalMessage"
-                        xpathExpression="//zakenUuid" />
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${zakenUuid}" />
-                </HttpSender>
-                <Forward name="success" path="StoreToelichtingHeader" />
-                <Forward name="exception" path="exception" />
-                <Forward name="timeout" path="timeout" />
-                <Forward name="illegalResult" path="illegalResult" />
-                <Forward name="interrupt" path="interrupt" />
-            </SenderPipe>
-
-            <PutInSessionPipe name="StoreToelichtingHeader" sessionKey="toelichtingHeader"
-                getInputFromFixedValue="TestValue">
+                <IbisLocalSender name="RequestGetMelding">
+                    <Param name="meldingUuid"
+                        xpathExpression="substring-after(//melding, 'https://mor-core.tld/melding/')" />
+                    <Param name="opdrachtUuid"
+                        xpathExpression="substring-after(//taakopdracht, '/taakopdracht/')" />
+                </IbisLocalSender>
                 <Forward name="success" path="CreatePostZaakRequest" />
                 <Forward name="exception" path="exception" />
-            </PutInSessionPipe>
+            </SenderPipe>
 
             <XsltPipe name="CreatePostZaakRequest"
                 styleSheetName="xsl/ESBZGWApi/PostZaakRequest.xsl"
@@ -163,16 +143,12 @@
                 <Forward name="exception" path="exception" />
             </JsonPipe>
 
-            <!-- TODO: give correct endpoint -->
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
-                    headersParams="X-Audit-Toelichting,Accept-Crs,Content-Crs">
-                    <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
+                    headersParams="Accept-Crs,Content-Crs">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="meldingUuid" sessionKey="originalMessage"
-                        xpathExpression="//meldingUuid" />
-                    <Param name="url" value="${Esuites.ESB.root-url}/melding/${meldingUuid}" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken" />
                 </HttpSender>
                 <Forward name="success" path="Exit" />
                 <Forward name="exception" path="exception" />
