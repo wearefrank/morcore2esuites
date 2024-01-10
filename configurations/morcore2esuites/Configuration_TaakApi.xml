@@ -16,7 +16,7 @@
 
             <SenderPipe name="Send2MorCore">
                 <HttpSender name="Send2MorCore" methodType="GET" />
-                <Param name="url" value="${MorCore.taak.API.root-url}/melding/${uuid}">
+                <Param name="url" xpathExpression="concat('${MorCore.taak.API.root-url}/melding/', $uuid)">
                     <Param name="uuid" sessionKey="uuid" />
                 </Param>
                 <Forward name="success" path="Json2Xml" />
