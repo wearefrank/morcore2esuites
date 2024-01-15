@@ -64,7 +64,8 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
-                    headersParams="X-Audit-Toelichting">
+                    headersParams="X-Audit-Toelichting" keystore="${KeyStoreURL}"
+                    keystoreAlias="${KeyStoreAlias}">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="url" value="${Esuites.ESB.root-url}/statussen" />
                 </HttpSender>
@@ -145,7 +146,8 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
-                    headersParams="Accept-Crs,Content-Crs">
+                    headersParams="Accept-Crs,Content-Crs" keystore="${KeyStoreURL}"
+                    keystoreAlias="${KeyStoreAlias}">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="url" value="${Esuites.ESB.root-url}/zaken" />
@@ -196,7 +198,8 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="GET"
-                    headersParams="Accept-Crs,Content-Crs">
+                    headersParams="Accept-Crs,Content-Crs" keystore="${KeyStoreURL}"
+                    keystoreAlias="${KeyStoreAlias}">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="uuid" sessionKey="uuid" />
