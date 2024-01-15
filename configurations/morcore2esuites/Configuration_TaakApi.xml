@@ -14,7 +14,7 @@
                 <Exit name="Reject" state="REJECTED" />
             </Exits>
 
-            <SenderPipe name="Send2MorCore">
+            <SenderPipe name="Send2MorCore" getInputFromFixedValue="&lt;defaultInputMessage/>">
                 <HttpSender name="Send2MorCore" methodType="GET" keystore="${KeyStoreURL}"
                     keystoreAlias="${KeyStoreAlias}" />
                 <Param name="url"
@@ -78,7 +78,7 @@
                 <Exit name="Reject" state="REJECTED" />
             </Exits>
 
-            <SenderPipe name="Send2MorCore">
+            <SenderPipe name="Send2MorCore" getInputFromFixedValue="&lt;defaultInputMessage/>">
                 <HttpSender name="Send2MorCore" methodType="GET" keystore="${KeyStoreURL}"
                     keystoreAlias="${KeyStoreAlias}" />
                 <Param name="meldingUuid" sessionKey="originalMessage"
