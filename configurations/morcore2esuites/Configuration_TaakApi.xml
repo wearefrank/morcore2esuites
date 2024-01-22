@@ -15,8 +15,18 @@
             </Exits>
 
             <SenderPipe name="Send2MorCore" getInputFromFixedValue="&lt;defaultInputMessage/>">
-                <HttpSender name="Send2MorCore" methodType="GET" keystore="${KeyStoreURL}"
-                    keystoreAlias="${KeyStoreAlias}" />
+                <HttpSender name="Send2MorCore" methodType="GET"
+                    keystore="${MorCore.keystore}"
+                    keystoreType="${MorCore.keystoreType}"
+                    keystoreAuthAlias="${MorCore.keystoreAuthAlias}"
+                    keystorePassword="${MorCore.keystorePassword}"
+                    keystoreAlias="${MorCore.keystoreAlias}"
+                    keystoreAliasAuthAlias="${MorCore.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${MorCore.keystoreAliasPassword}"
+                    truststore="${MorCore.truststore}"
+                    truststoreAuthAlias="${MorCore.truststoreAuthAlias}"
+                    truststorePassword="${MorCore.truststorePassword}"
+                    truststoreType="${MorCore.truststoreType}" />
                 <Param name="url"
                     xpathExpression="concat('${MorCore.taak.API.root-url}/melding/', $uuid)">
                     <Param name="uuid" sessionKey="uuid" />
@@ -79,8 +89,18 @@
             </Exits>
 
             <SenderPipe name="Send2MorCore" getInputFromFixedValue="&lt;defaultInputMessage/>">
-                <HttpSender name="Send2MorCore" methodType="GET" keystore="${KeyStoreURL}"
-                    keystoreAlias="${KeyStoreAlias}" />
+                <HttpSender name="Send2MorCore" methodType="GET"
+                    keystore="${MorCore.keystore}"
+                    keystoreType="${MorCore.keystoreType}"
+                    keystoreAuthAlias="${MorCore.keystoreAuthAlias}"
+                    keystorePassword="${MorCore.keystorePassword}"
+                    keystoreAlias="${MorCore.keystoreAlias}"
+                    keystoreAliasAuthAlias="${MorCore.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${MorCore.keystoreAliasPassword}"
+                    truststore="${MorCore.truststore}"
+                    truststoreAuthAlias="${MorCore.truststoreAuthAlias}"
+                    truststorePassword="${MorCore.truststorePassword}"
+                    truststoreType="${MorCore.truststoreType}" />
                 <Param name="meldingUuid" sessionKey="originalMessage"
                     xpathExpression="//meldingUuid" />
                 <Param name="url"

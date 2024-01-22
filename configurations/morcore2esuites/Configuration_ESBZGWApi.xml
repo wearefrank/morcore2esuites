@@ -64,8 +64,18 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
-                    headersParams="X-Audit-Toelichting" keystore="${KeyStoreURL}"
-                    keystoreAlias="${KeyStoreAlias}">
+                    headersParams="X-Audit-Toelichting"
+                    keystore="${Esuites.keystore}"
+                    keystoreType="${Esuites.keystoreType}"
+                    keystoreAuthAlias="${Esuites.keystoreAuthAlias}"
+                    keystorePassword="${Esuites.keystorePassword}"
+                    keystoreAlias="${Esuites.keystoreAlias}"
+                    keystoreAliasAuthAlias="${Esuites.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${Esuites.keystoreAliasPassword}"
+                    truststore="${Esuites.truststore}"
+                    truststoreAuthAlias="${Esuites.truststoreAuthAlias}"
+                    truststorePassword="${Esuites.truststorePassword}"
+                    truststoreType="${Esuites.truststoreType}">
                     <Param name="X-Audit-Toelichting" sessionKey="toelichtingHeader" />
                     <Param name="url" value="${Esuites.ESB.root-url}/statussen" />
                 </HttpSender>
@@ -111,7 +121,8 @@
 
             <PutSystemDateInSessionPipe name="StoreSystemDate" />
 
-            <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo" getInputFromFixedValue="&lt;defaultInputMessage/>">
+            <SenderPipe name="RequestMeldingInfo" storeResultInSessionKey="meldingInfo"
+                getInputFromFixedValue="&lt;defaultInputMessage/>">
                 <IbisLocalSender name="RequestGetMelding" javaListener="MorCore_GetMelding">
                     <Param name="meldingUuid"
                         xpathExpression="substring-after(//melding, 'https://mor-core.tld/melding/')" />
@@ -120,7 +131,8 @@
                 <Forward name="exception" path="exception" />
             </SenderPipe>
 
-            <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo" getInputFromFixedValue="&lt;defaultInputMessage/>">
+            <SenderPipe name="RequestOpdrachtInfo" storeResultInSessionKey="opdrachtInfo"
+                getInputFromFixedValue="&lt;defaultInputMessage/>">
                 <IbisLocalSender name="RequestGetMelding" javaListener="MorCore_GetTaakOpdracht">
                     <Param name="meldingUuid"
                         xpathExpression="substring-after(//melding, 'https://mor-core.tld/melding/')" />
@@ -146,8 +158,18 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="POST"
-                    headersParams="Accept-Crs,Content-Crs" keystore="${KeyStoreURL}"
-                    keystoreAlias="${KeyStoreAlias}">
+                    headersParams="Accept-Crs,Content-Crs"
+                    keystore="${Esuites.keystore}"
+                    keystoreType="${Esuites.keystoreType}"
+                    keystoreAuthAlias="${Esuites.keystoreAuthAlias}"
+                    keystorePassword="${Esuites.keystorePassword}"
+                    keystoreAlias="${Esuites.keystoreAlias}"
+                    keystoreAliasAuthAlias="${Esuites.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${Esuites.keystoreAliasPassword}"
+                    truststore="${Esuites.truststore}"
+                    truststoreAuthAlias="${Esuites.truststoreAuthAlias}"
+                    truststorePassword="${Esuites.truststorePassword}"
+                    truststoreType="${Esuites.truststoreType}">
                     <Param name="Accept-Crs" value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
                     <Param name="url" value="${Esuites.ESB.root-url}/zaken" />
@@ -198,12 +220,25 @@
 
             <SenderPipe name="SendToESB">
                 <HttpSender name="SendToESB" methodType="GET"
-                    headersParams="Accept-Crs,Content-Crs" keystore="${KeyStoreURL}"
-                    keystoreAlias="${KeyStoreAlias}">
-                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    headersParams="Accept-Crs,Content-Crs"
+                    keystore="${Esuites.keystore}"
+                    keystoreType="${Esuites.keystoreType}"
+                    keystoreAuthAlias="${Esuites.keystoreAuthAlias}"
+                    keystorePassword="${Esuites.keystorePassword}"
+                    keystoreAlias="${Esuites.keystoreAlias}"
+                    keystoreAliasAuthAlias="${Esuites.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${Esuites.keystoreAliasPassword}"
+                    truststore="${Esuites.truststore}"
+                    truststoreAuthAlias="${Esuites.truststoreAuthAlias}"
+                    truststorePassword="${Esuites.truststorePassword}"
+                    truststoreType="${Esuites.truststoreType}">
+                    <Param name="Accept-Crs"
+                        value="EPSG:4326" />
                     <Param name="Content-Crs" value="EPSG:4326" />
-                    <Param name="uuid" sessionKey="uuid" />
-                    <Param name="url" value="${Esuites.ESB.root-url}/zaken/${uuid}" />
+                    <Param
+                        name="uuid" sessionKey="uuid" />
+                    <Param name="url"
+                        value="${Esuites.ESB.root-url}/zaken/${uuid}" />
                 </HttpSender>
                 <Forward name="success" path="Json2XML" />
                 <Forward name="exception" path="exception" />
