@@ -282,4 +282,35 @@
         </Pipeline>
     </Adapter>
 
+    <Adapter name="PingEsuites">
+        <Receiver>
+            <JavaListener name="PingEsuites" />
+        </Receiver>
+
+        <Pipeline>
+            <!-- Due to a lack of a ping functionality within Esuites, this pipeline can be used as
+            a replacement.
+            It requests a lists of Zaken in Esuites and returns the result. -->
+            <SenderPipe name="PingEsuitesSender">
+                <HttpSender name="PingEsuitesSender" methodType="POST"
+                    headersParams="Accept-Crs,Content-Crs"
+                    keystore="${Esuites.keystore}"
+                    keystoreType="${Esuites.keystoreType}"
+                    keystoreAuthAlias="${Esuites.keystoreAuthAlias}"
+                    keystorePassword="${Esuites.keystorePassword}"
+                    keystoreAlias="${Esuites.keystoreAlias}"
+                    keystoreAliasAuthAlias="${Esuites.keystoreAliasAuthAlias}"
+                    keystoreAliasPassword="${Esuites.keystoreAliasPassword}"
+                    truststore="${Esuites.truststore}"
+                    truststoreAuthAlias="${Esuites.truststoreAuthAlias}"
+                    truststorePassword="${Esuites.truststorePassword}"
+                    truststoreType="${Esuites.truststoreType}">
+                    <Param name="Accept-Crs" value="EPSG:4326" />
+                    <Param name="Content-Crs" value="EPSG:4326" />
+                    <Param name="url" value="${Esuites.ESB.root-url}/zaken" />
+                </HttpSender>
+            </SenderPipe>
+        </Pipeline>
+    </Adapter>
+
 </Module>
