@@ -10,7 +10,7 @@ Morcore2Esuites in een koppeling tussen Morcore en Esuites, gebouwd met het [Fra
 
 We zullen voor de deployment de [Frank!Framework Helm Chart](https://frankframework.github.io/charts/frankframework) gebruiken. Hiervoor is de [Helm](https://helm.sh/) package manager nodig.
 
-> ![INFO]
+> [!NOTE]
 > Deze stappen omschijven hoe een deployment met de hand kan worden gedaan. Voor GitOps kan tussen de regels doorgelezen worden om de juiste informatie eruit te halen.
 
 Helm
@@ -262,4 +262,5 @@ De Chart kan worden geïnstalleerd met het volgende commando:
 helm install my-frankframework frankframework/frankframework -f values.yaml
 ```
 
-Voor vragen kan contact worden opgenomen met het Gemeente Team van WeAreFrank!
+> [!TIP]
+> Voor vragen kan contact worden opgenomen met het Gemeente Team van WeAreFrank!
